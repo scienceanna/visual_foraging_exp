@@ -1,0 +1,73 @@
+Set up a new folder in this directory: give it an informative name.
+
+Within that folder, you will need 3 files:
+- exp_config.csv
+- conditions.csv
+- blocks.csv
+We suggest copying these from another folder and modifying as required.
+NOTE that pblocks.csv is an optional file you can add, depending on how you want your practice trials to be set up (see below).
+
+#### EXP CONFIG ####
+scrn_width: desired screen width
+scrn_height: desired screen height
+width_border: how big you want the border width to be (i.e. the area where stimuli won't be displayed)
+height_border: how big you want the border height to be (i.e. the area where stimuli won't be displayed)
+jiggle: how much jiggle do you want to add in the grid placement rule conditions? 20 is a reasonable default if you're not sure.
+block_style: how would you like the blocks to be displayed? Options - 'in_order' (i.e. in the order they are presented in the blocks file), 'randomised' (i.e. in a random order). 'counter_balanced' (i.e. half your participants will see group 1 blocks first, half will see group 2 blocks first).
+global_practice: in the case where you have one practice block, this should match the practice block label. If you are doing something more complicated involving a pblocks file (see below), this should be set to 'none'. If you don't have a practice block, set to 'none'.
+intro_expt: what would you like to tell participants at the beginning of the experiment?
+outro_expt: what would you like to tell participants at the end of the experiment?
+track_eyes: set to 'track' if you would like to use the Eyelink Eyetracker
+screenshot: set to 'screenshot' if you would like to take screenshots of your trials.
+
+#### BLOCKS ####
+attribute: block name 
+label: label for the block (what is used in the experiment, so make this as informative as possible)
+conditions: which conditions you want to include in this block. The names here should match the names you use in the 'conditions.csv' file. Separate the names using '-' (NO spaces). Trials from these conditions will be randomised in the block.
+n_trials_per_condition: how many trials you would like per condition. (E.g. if you put 3 here, and you have 2 conditions in the block, you will get 6 trials per block).
+group: if you are using block_style = 'counter_balanced', please divide your blocks into two groups that you would like to be counterbalanced (e.g. for half the participants, group 1 will go first, and for the other half, group 2 will go first). Otherwise (including for a practice block), set to 'none'.
+intro_text: what would you like to tell participants at the beginning of the block?
+outro_text: what would you like to tell participants at the end of the block?
+practice: this should be set to 'none' unless you are using a pblocks file (see below for instructions about this)
+
+#### CONDITIONS ####
+attribute: condition name (not actually used in the experiment)
+label: label for the condition (what is used in the experiment, so make this as informative as possible)
+n_row: number of rows in the item grid (total number of items will be n_row * n_col)
+n_col: number of columns in the item grid (total number of items will be n_row * n_col)
+placement_rule: how the items should be placed. Options - 'uniform' (i.e. uniform random placement), 'cardinal' (i.e. on a grid of cardinal directions), 'rotated' (i.e. on a rotated grid), 'clump' (i.e. in clumps, as determined by 1/f noise)
+prop_target: what proportion of the total number of items should be targets?
+prop_targ1: what proportion of the total number of targets should be target 1?
+prop_dist1: what proportion of the total number of targets should be target 2?
+n_targ_class: how many target classes should there be? (currently only works for 2)
+n_dist_class: how many distractor classes should there be? (currently only works for 2)
+stopping_rule: how a trial should be ended. Options - 'timer' (i.e. end the trial when we reach a maximum time, and don't repeat), 'points' (i.e. end trial when we reach a certain points threshold), 'exhaustive' (i.e. end trial when we have found all targets).
+point_threshold: what is the points threshold for this condition?
+max_time: what is the maximum amount of time that someone can spend on a trial? Note that this applies whatever stopping rule is applied - however, for stopping_rule options other than 'timer', reaching the maximum time will prompt a repeat of the trial.
+distracter_click: what should happen if someone clicks on a distractor. Options - 'terminate' (i.e. end the trial, and don't repeat), 'recycle' (i.e. end the trial and do repeat), 'as_target' (i.e. treat the same as a target).
+display_line: should we display a line? Options - 'horz' (i.e. horizontal line), 'vert' (i.e. vertical line), 'off' (i.e. no line).
+display_feedback: should we display feedback? Options - 'off' (i.e. don't display feedback), 'trial_found' (i.e. display the total number of targets found in the trial, in top right), 'trial_score' (i.e. display total number of targets found in trial, in top right), 'block_found' (i.e. give the total number found at the end of the block), 'block_score' (i.e. give the total score at the end of the block)
+targ1_col: colour of target 1
+targ2_col: colour of target 2
+dist1_col: colour of distractor 1
+dist2_col: colour of distractor 2
+targ1_shape: number of vertices of target 1
+targ2_shape: number of vertices of target 2
+dist1_shape: number of vertices of distractor 1
+dist2_shape: number of vertices of distractor 2
+targ1_points: number of points you should get for target 1
+targ2_points: number of points you should get for target 2
+dist1_points: number of points you should get for distractor 1
+dist2_points: number of points you should get for distractor 2
+
+#### HOW TO SET UP PRACTICE TRIALS ####
+The easiest option is to set up one practice block at the beginning of the experiment. You can use conditions you are using in the main experiment, or set up a special practice condition.
+In the exp_config csv, set global_practice to the name of the practice block label. If you are setting 'block_style' to in order, make sure your practice block is the first one in the blocks csv. If 'block_style' is set to randomised, the code will make sure that the practice block is put first, then all other blocks are randomised.
+Make sure practice in your blocks csv is set to 'none' for all blocks.
+
+If you need a more complicated practice trials set up, do the following:
+- set up a pblocks csv (see example in test folder) detailing the practice blocks you want.
+- in your blocks csv, set 'practice' to the relevant label in the pblocks file. This will associate that block with the specific practice block, and the relevant practice block will run before the block. 
+- in your exp_config csv, set global_practice to 'none'.
+- note that each practice block can only be associated with one other experimental block i.e. if you want 2 practice blocks in your experiment, you will need two columns in your pblocks csv.
+- make sure practice in your pblocks csv is set to 'none' for all blocks.

@@ -1,0 +1,7 @@
+attribute,block0,block1
+label,black0,block1
+conditions,test,test2
+n_trials_per_cond,1,1
+intro_text,This is a practice block.,"In this block, you need to find the squares."
+outro_text,Now you will complete the real trials.,This block is complete. Take a break!
+practice,none,none

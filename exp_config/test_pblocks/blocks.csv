@@ -1,0 +1,7 @@
+attribute,block1,block2
+label,block1,block2
+conditions,test,test2
+n_trials_per_cond,3,3
+intro_text,"In this block, you need to find the squares.","In this block, you need to find the pentagons."
+outro_text,This block is complete. Take a break!,This block is complete. Take a break!
+practice,prac1,prac2
