@@ -75,7 +75,6 @@ fix_person_and_trial <- function(d) {
   
 }
 
-
 read_in_files <- function(my_files, spec) {
   
   ##############################
