@@ -101,9 +101,8 @@ read_in_files <- function(my_files, spec) {
       person = parse_number(person), 
       # start trial counter at 1 rather than 0
       trial = trial + 1,
-      # item_class found be a number
-      item_class = as.numeric(factor(item_class)),
-      # condition should be a factor
+      # item_class & condition to factors
+      item_class =factor(item_class),
       condition = as.factor(condition)) %>% 
     # take only the highest number attempt 
     # (this needs checking with a dataset with some mistakes)
