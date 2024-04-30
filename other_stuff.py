@@ -7,7 +7,6 @@ import pandas as pd
 import math
 import random
 import os.path
-from EyeLinkCoreGraphicsPsychoPy import EyeLinkCoreGraphicsPsychoPy
 
 
 class Experiment():
@@ -65,6 +64,7 @@ class Experiment():
         # set up eye tracking, if using
         if self.track_eyes == "track":
             print("we are going to eyetrack")
+            from EyeLinkCoreGraphicsPsychoPy import EyeLinkCoreGraphicsPsychoPy
             import pylink as pl
             # connect to eyelink host pc
             self.el_tracker = pl.EyeLink("100.1.1.1")
