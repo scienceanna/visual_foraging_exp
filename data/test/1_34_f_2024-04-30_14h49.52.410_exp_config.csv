@@ -1,0 +1,12 @@
+,attribute,value
+0,scrn_width,1500
+1,scrn_height,1500
+2,width_border,500
+3,height_border,500
+4,jiggle,0
+5,block_style,randomised
+6,global_practice,practice
+7,intro_expt,Welcome to the experiment.
+8,outro_expt,Thank you for taking part!
+9,track_eyes,FALSE
+10,screenshot,FALSE

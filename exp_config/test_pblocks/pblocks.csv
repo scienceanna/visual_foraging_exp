@@ -2,6 +2,7 @@ attribute,block1,block2
 label,prac1,prac2
 conditions,pecan,pecan
 n_trials_per_cond,2,2
+group,none,none
 intro_text,YOLO,YOLO
 outro_text,Thanks for all the fish,Thanks for all the fish
 practice,none,none
