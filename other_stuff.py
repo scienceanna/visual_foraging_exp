@@ -26,9 +26,13 @@ class Experiment():
 
         self.person = self.collect_person_info()
         
+        self.p_id = self.person.pop("Participant number|0")
+        self.age = self.person.pop("Age|1")
+        self.gender = self.person.pop("Gender|2")
+
         # Setting up experimental file
         self.date = data.getDateStr()
-        self.fileName = str(self.person[0]) + "_" + str(self.person[1]) + "_" + str(self.person[2]) + "_" + self.date
+        self.fileName = str(self.p_id) + "_" + str(self.age) + "_" + str(self.gender) + "_" + self.date
         self.dataFile = open(self.data_folder + self.fileName+'_found.csv', 'w') 
         self.dataFile.write('person,block,condition,trial,attempt,id,found,score,item_class,x,y,rt\n') # this is d$found
         
@@ -92,15 +96,14 @@ class Experiment():
         
     def collect_person_info(self):
         # get some basic experimental info
-        myDlg = gui.Dlg(title="Foraging experiment")
-        myDlg.addText('Participant info')
-        myDlg.addField('Participant number:')
-        myDlg.addField('Age:')
-        myDlg.addField('Gender:')
+        info = {'Participant number':'1', 'Age':99, 'Gender': 'f'}
         
-        ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
-        if myDlg.OK:  # or if ok_data is not None
-            return(ok_data)
+        dictDlg = gui.DlgFromDict(dictionary=info,
+        title='Foraging experiment', order = ['Participant number', 'Age', 'Gender'])
+        
+        #ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
+        if dictDlg.OK:  # or if ok_data is not None
+            return(info)
         else:
             print('user cancelled')
             core.quit()
@@ -644,7 +647,7 @@ class Trial():
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
-            exp_settings.dataFileStim.write(str(exp_settings.person[0]) + "," + str(self.block) + "," + str(self.condition["label"][0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
+            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"][0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
 
         for ii in self.items:  
             ii.poly.autoDraw = True
@@ -664,7 +667,7 @@ class Trial():
         
         # save a frame, if wanted.
         if exp_settings.screenshot == "screenshot":
-            self.imageName = str(exp_settings.person[0]) + "_" + str(self.block) + "_" + str(self.condition["label"][0]) + "_" + str(self.n)
+            self.imageName = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"][0]) + "_" + str(self.n)
             exp_settings.win.getMovieFrame()
             exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageName + '.png'))
 
@@ -721,7 +724,7 @@ class Trial():
 
                     # add info to log
                     # person, block, condition, trial, attempt, id, found, score, item_class, x, y, rt
-                    exp_settings.dataFile.write(str(exp_settings.person[0]) + "," + str(self.block) + "," + str(self.condition["label"][0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
+                    exp_settings.dataFile.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"][0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
                       
             
             # check if we have reached the max trial time
