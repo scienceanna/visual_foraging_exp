@@ -7,6 +7,7 @@ import pandas as pd
 import math
 import random
 import os.path
+import ast
 
 
 class Experiment():
@@ -353,7 +354,7 @@ class Item():
             ori = self.orient,
             pos = [self.x, self.y],
             autoDraw = False)
-
+    
     def update_location(self, x, y):
 
         self.x = x
@@ -363,13 +364,13 @@ class Item():
     def get_col_from_class(self, cond):
 
         if self.item_class == "targ_class1":
-            colour = cond["targ1_col"][0]
+            colour = ast.literal_eval(cond["targ1_col"][0])
         elif self.item_class == "targ_class2":
-            colour = cond["targ2_col"][0]
+            colour = ast.literal_eval(cond["targ2_col"][0])
         elif self.item_class == "dist_class1":
-            colour = cond["dist1_col"][0]
+            colour = ast.literal_eval(cond["dist1_col"][0])
         elif self.item_class == "dist_class2":
-            colour = cond["dist2_col"][0]
+            colour = ast.literal_eval(cond["dist2_col"][0])
 
         return(colour)
 

@@ -1,0 +1,28 @@
+attribute,cond1,cond2
+label,test,test2
+n_row,5,5
+n_col,5,5
+placement_rule,cardinal,cardinal
+prop_target,0.5,0.5
+prop_targ1,0.5,0.5
+prop_dist1,0.5,0.5
+n_targ_class,2,2
+n_dist_class,2,2
+stopping_rule,points,points
+point_threshold,4,4
+max_time,60,60
+distracter_click,as_target,as_target
+display_line,off,off
+display_feedback,off,off
+targ1_col,"[0.0991116690214744, -0.287425634, -0.291946425078645]","[0.0991116690214744, -0.287425634, -0.291946425078645]"
+targ2_col,"[0.0924391982007606, -0.281392295, -0.323048261131624]","[0.0924391982007606, -0.281392295, -0.323048261131624]"
+dist1_col,"[1,1,0]","[1,1,0]"
+dist2_col,"[0,1,1]","[0,1,1]"
+targ1_shape,50,50
+targ2_shape,50,50
+dist1_shape,50,50
+dist2_shape,50,50
+targ1_points,2,2
+targ2_points,2,2
+dist1_points,0,0
+dist2_points,0,0
