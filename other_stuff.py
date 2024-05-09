@@ -337,7 +337,7 @@ class Item():
         self.is_target = is_target 
 
         # now work out what colour and shape the item should be
-        self.colour = self.get_col_from_class(cond)
+        self.colour = self.get_col_from_class(cond, exp_settings)
         self.shape = self.get_shape_from_class(cond)
         self.points = self.get_points_from_class(cond)
         
@@ -361,16 +361,42 @@ class Item():
         self.y = y
         self.poly.pos = [x, y]
 
-    def get_col_from_class(self, cond):
+    def get_col_from_class(self, cond, es):
 
         if self.item_class == "targ_class1":
-            colour = ast.literal_eval(cond["targ1_col"][0])
+            colour = cond["targ1_col"][0]
+            
+            if colour == "targ_colrange":
+                randomCol = random.randint(0,1)
+                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
+                colour = colrange_file.at[randomCol, "colRange"]
+                
         elif self.item_class == "targ_class2":
-            colour = ast.literal_eval(cond["targ2_col"][0])
+            colour = cond["targ2_col"][0]
+            
+            if colour == "targ_colrange":
+                randomCol = random.randint(0,1)
+                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
+                colour = colrange_file.at[randomCol, "colRange"]
+                
         elif self.item_class == "dist_class1":
-            colour = ast.literal_eval(cond["dist1_col"][0])
+            colour = cond["dist1_col"][0]
+            
+            if colour == "targ_colrange":
+                randomCol = random.randint(0,1)
+                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
+                colour = colrange_file.at[randomCol, "colRange"]
+
         elif self.item_class == "dist_class2":
-            colour = ast.literal_eval(cond["dist2_col"][0])
+            colour = cond["dist2_col"][0]
+            
+            if colour == "targ_colrange":
+                randomCol = random.randint(0,1)
+                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
+                colour = colrange_file.at[randomCol, "colRange"]
+        
+        # this needs to only trigger if we are using rgb colours
+        colour = ast.literal_eval(colour)    
 
         return(colour)
 

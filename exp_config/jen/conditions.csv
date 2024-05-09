@@ -14,10 +14,10 @@ max_time,60,60
 distracter_click,as_target,as_target
 display_line,off,off
 display_feedback,off,off
-targ1_col,"[0.0991116690214744, -0.287425634, -0.291946425078645]","[0.0991116690214744, -0.287425634, -0.291946425078645]"
-targ2_col,"[0.0924391982007606, -0.281392295, -0.323048261131624]","[0.0924391982007606, -0.281392295, -0.323048261131624]"
-dist1_col,"[1,1,0]","[1,1,0]"
-dist2_col,"[0,1,1]","[0,1,1]"
+targ1_col,targ_colrange,targ_colrange
+targ2_col,targ_colrange,targ_colrange
+dist1_col,targ_colrange,targ_colrange
+dist2_col,targ_colrange,targ_colrange
 targ1_shape,50,50
 targ2_shape,50,50
 dist1_shape,50,50
