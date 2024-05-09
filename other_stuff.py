@@ -384,7 +384,7 @@ class Item():
         
         colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
         colrange_len = len(colrange_file)
-        randomCol = random.randint(0,1)
+        randomCol = random.randint(0,colrange_len)
         colour = colrange_file.at[randomCol, "colRange"]
 
         # this needs to only trigger if we are using rgb colours
