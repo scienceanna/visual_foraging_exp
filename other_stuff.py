@@ -335,9 +335,15 @@ class Item():
         self.id = item_id
         self.item_class = item_class
         self.is_target = is_target 
+        
+        # are we using a colour range, or discrete colours?
+        if os.path.isfile(exp_settings.exp_folder+"targ_colrange.csv"):
+            self.colour = self.get_col_range_from_class(cond, exp_settings)
+        else:
+            self.colour = self.get_col_from_class(cond)
 
         # now work out what colour and shape the item should be
-        self.colour = self.get_col_from_class(cond, exp_settings)
+
         self.shape = self.get_shape_from_class(cond)
         self.points = self.get_points_from_class(cond)
         
@@ -361,44 +367,31 @@ class Item():
         self.y = y
         self.poly.pos = [x, y]
 
-    def get_col_from_class(self, cond, es):
-
+    def get_col_from_class(self, cond):
+        
         if self.item_class == "targ_class1":
             colour = cond["targ1_col"][0]
-            
-            if colour == "targ_colrange":
-                randomCol = random.randint(0,1)
-                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
-                colour = colrange_file.at[randomCol, "colRange"]
-                
         elif self.item_class == "targ_class2":
             colour = cond["targ2_col"][0]
-            
-            if colour == "targ_colrange":
-                randomCol = random.randint(0,1)
-                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
-                colour = colrange_file.at[randomCol, "colRange"]
-                
-        elif self.item_class == "dist_class1":
-            colour = cond["dist1_col"][0]
-            
-            if colour == "targ_colrange":
-                randomCol = random.randint(0,1)
-                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
-                colour = colrange_file.at[randomCol, "colRange"]
-
         elif self.item_class == "dist_class2":
             colour = cond["dist2_col"][0]
-            
-            if colour == "targ_colrange":
-                randomCol = random.randint(0,1)
-                colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
-                colour = colrange_file.at[randomCol, "colRange"]
+        elif self.item_class == "dist_class2":
+            colour = cond["dist2_col"][0]
         
+        return(colour)
+        
+    def get_col_range_from_class(self, cond, es):
+        
+        colrange_file = pd.read_csv(es.exp_folder+"targ_colrange.csv")
+        colrange_len = len(colrange_file)
+        randomCol = random.randint(0,1)
+        colour = colrange_file.at[randomCol, "colRange"]
+
         # this needs to only trigger if we are using rgb colours
         colour = ast.literal_eval(colour)    
 
-        return(colour)
+        return(colour)   
+
 
     def get_shape_from_class(self, cond):
         
