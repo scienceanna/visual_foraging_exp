@@ -198,9 +198,9 @@ class Experiment():
                     blocks_one.append(block)
                 elif block_file["group"][blk] == "2":
                     blocks_two.append(block)
-            else:
-                blocks.append(block)
-        
+                else:
+                    blocks.append(block)
+
         if practice==False:
             if self.block_style == "randomised":
                 random.shuffle(blocks)
@@ -212,12 +212,12 @@ class Experiment():
                 random.shuffle(blocks_one)
                 random.shuffle(blocks_two)
             # if even participant number, group 2 first. Otherwise, group 1 first.            
-                if int(self.person[0]) % 2 == 0:
-                    blocks = blocks_one + blocks_two
+                if int(self.p_id[0]) % 2 == 0:
+                    blocks = blocks + blocks_one + blocks_two
                 else:
-                    blocks = blocks_two + blocks_one
+                    blocks = blocks + blocks_two + blocks_one
                 
-                print(blocks)
+
                 
         return(blocks)
         
