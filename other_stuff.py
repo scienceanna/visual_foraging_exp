@@ -200,6 +200,8 @@ class Experiment():
                     blocks_two.append(block)
                 else:
                     blocks.append(block)
+            else:
+                blocks.append(block)
 
         if practice==False:
             if self.block_style == "randomised":
