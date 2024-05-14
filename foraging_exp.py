@@ -4,7 +4,7 @@ from psychopy.hardware import keyboard
 from other_stuff import *
 
 # init experiment
-experiment = Experiment("scarcity")
+experiment = Experiment("test")
 
 # run the experiment
 experiment.run()

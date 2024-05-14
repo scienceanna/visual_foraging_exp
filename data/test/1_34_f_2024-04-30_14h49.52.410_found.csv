@@ -1,4 +1,0 @@
-person,block,condition,trial,attempt,id,found,score,item_class,x,y,rt
-1,block1,test2,0,1,16,1,2,targ_class1,-214.0,107.0,1.79
-1,black0,test,0,1,19,1,2,targ_class1,0.0,152.0,1.47
-1,black0,test,0,1,18,2,4,targ_class1,-76.0,76.0,2.35
