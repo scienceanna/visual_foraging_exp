@@ -1,0 +1,8 @@
+attribute,block0
+label,block0
+conditions,circles
+n_trials_per_cond,1
+group,none
+intro_text,A trial
+outro_text,Go go gone
+practice,none
