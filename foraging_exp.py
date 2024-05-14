@@ -4,7 +4,7 @@ from psychopy.hardware import keyboard
 from other_stuff import *
 
 # init experiment
-experiment = Experiment("test")
+experiment = Experiment("circles")
 
 # run the experiment
 experiment.run()
