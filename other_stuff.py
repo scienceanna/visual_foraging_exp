@@ -839,10 +839,15 @@ def get_grid(rows, cols, theta, es):
     # some parameters
     jiggle_param = es.jiggle # how much random jitter should we add
 
+    # if we are using a circular aperture, we will need to make the underlying grid larger
+
     xmin = es.width_border
     xmax = es.scrn_width - es.width_border
     ymin = es.height_border
     ymax = es.scrn_height - es.height_border
+
+    r = math.sqrt((xmax - xmin) * (ymax - ymin)) / math.pi
+    print(r)
 
     # create one-dimensional arrays for x and y
     # generate twice as many as required so 
@@ -858,16 +863,14 @@ def get_grid(rows, cols, theta, es):
     x = x.reshape((np.prod(x.shape),))
     y = y.reshape((np.prod(y.shape),))
 
- 
 
     # scale to correct size
     x = (es.scrn_width  - 2*es.width_border)  * x + es.width_border
     y = (es.scrn_height - 2*es.height_border) * y + es.height_border
   
     idx = (x > es.width_border) * (x < es.scrn_width - es.width_border) * (y > es.height_border) * (y < es.scrn_height - es.height_border) 
-    x = x[idx]
-    y = y[idx]
-
+    #x = x[idx]
+    #y = y[idx]
 
     # translate so that (0, 0) is the centre of the screen
     x = x - es.scrn_width/2
@@ -880,8 +883,10 @@ def get_grid(rows, cols, theta, es):
     x = xr
     y = yr 
     
-    #idx = ((x)**2 + (y)**2) < 500**2
- 
+    # take only points that fall inside a circle
+    idx = ((x)**2 + (y)**2) < r**2
+    x = x[idx]
+    y = y[idx]
 
     # apply random jiggle and round
     x = np.around(x + jiggle_param * np.random.randn(len(x)))

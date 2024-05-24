@@ -1,9 +1,9 @@
 attribute,cond1
 label,circles
-n_row,5
-n_col,5
+n_row,18
+n_col,18
 aperture,circle
-placement_rule,rotated
+placement_rule,cardinal
 prop_target,0.5
 prop_targ1,0.9
 prop_dist1,0.5
