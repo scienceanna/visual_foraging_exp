@@ -213,8 +213,8 @@ class Experiment():
             elif self.block_style == "counter_balanced":
                 random.shuffle(blocks_one)
                 random.shuffle(blocks_two)
-            # if even participant number, group 2 first. Otherwise, group 1 first.            
-                if int(self.p_id[0]) % 2 == 0:
+            # if even participant number, group 2 first. Otherwise, group 1 first.
+                if int(self.p_id) % 2 == 0:
                     blocks = blocks + blocks_one + blocks_two
                 else:
                     blocks = blocks + blocks_two + blocks_one
