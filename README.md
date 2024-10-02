@@ -1,10 +1,10 @@
 # Visual foraging experiment in PsychoPy
 
-Current version 1.0 (29/04/24)
+Current version 1.01 (02/10/24)
 
 ## How to run
 
-This experiment runs via PsychoPy (freely available at https://www.psychopy.org/).
+This experiment runs via PsychoPy (freely available at https://www.psychopy.org/). It is currently configured to work with PsychoPy version 2024.2.2.
 
 To run, open 'foraging_exp' in the coder view.
 
