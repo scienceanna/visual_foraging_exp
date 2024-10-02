@@ -26,12 +26,13 @@ class Experiment():
 
         self.person = self.collect_person_info()
         
-        self.p_id = self.person.pop("Participant number|0")
-        self.age = self.person.pop("Age|1")
-        self.gender = self.person.pop("Gender|2")
+        self.p_id = self.person.pop("Participant number")
+        self.age = self.person.pop("Age")
+        self.gender = self.person.pop("Gender")
 
         # Setting up experimental file
         self.date = data.getDateStr()
+        #self.fileName = str(self.person[0]) + "_" + str(self.person[1]) + "_" + str(self.person[2]) + "_" + self.date
         self.fileName = str(self.p_id) + "_" + str(self.age) + "_" + str(self.gender) + "_" + self.date
         self.dataFile = open(self.data_folder + self.fileName+'_found.csv', 'w') 
         self.dataFile.write('person,block,condition,trial,attempt,id,found,score,item_class,x,y,rt\n') # this is d$found
@@ -115,22 +116,22 @@ class Experiment():
             exp_config.to_csv(self.data_folder + self.fileName + '_exp_config.csv')
             exp_config = exp_config.set_index("attribute").T # transpose
 
-            self.scrn_height = int(exp_config["scrn_height"][0])
-            self.scrn_width = int(exp_config["scrn_width"][0])
+            self.scrn_height = int(exp_config["scrn_height"].iloc[0])
+            self.scrn_width = int(exp_config["scrn_width"].iloc[0])
 
-            self.height_border = int(exp_config["height_border"][0])
-            self.width_border = int(exp_config["width_border"][0])
+            self.height_border = int(exp_config["height_border"].iloc[0])
+            self.width_border = int(exp_config["width_border"].iloc[0])
             
-            self.jiggle = int(exp_config["jiggle"][0])
+            self.jiggle = int(exp_config["jiggle"].iloc[0])
 
-            self.intro_expt = exp_config["intro_expt"][0]
-            self.outro_expt = exp_config["outro_expt"][0]
+            self.intro_expt = exp_config["intro_expt"].iloc[0]
+            self.outro_expt = exp_config["outro_expt"].iloc[0]
 
-            self.block_style = exp_config["block_style"][0]
-            self.global_practice = exp_config["global_practice"][0]
+            self.block_style = exp_config["block_style"].iloc[0]
+            self.global_practice = exp_config["global_practice"].iloc[0]
 
-            self.track_eyes = exp_config["track_eyes"][0]
-            self.screenshot = exp_config["screenshot"][0]
+            self.track_eyes = exp_config["track_eyes"].iloc[0]
+            self.screenshot = exp_config["screenshot"].iloc[0]
 
     def run(self):
 
@@ -191,7 +192,7 @@ class Experiment():
         blocks_two = []
 
         for blk in range(n_blocks):
-            block = Block(block_file["label"][blk], block_file["conditions"][blk], block_file["n_trials_per_cond"][blk], block_file["group"][blk], block_file["intro_text"][blk], block_file["outro_text"][blk], block_file["practice"][blk], self)
+            block = Block(block_file["label"].iloc[blk], block_file["conditions"].iloc[blk], block_file["n_trials_per_cond"].iloc[blk], block_file["group"].iloc[blk], block_file["intro_text"].iloc[blk], block_file["outro_text"].iloc[blk], block_file["practice"].iloc[blk], self)
             
             if self.block_style == "counter_balanced":
                 if block_file["group"][blk] == "1":
@@ -315,11 +316,11 @@ class Block():
         outro_text = visual.TextStim(es.win, self.outro_text, units = 'pix', height = 32)
         outro_text.draw()
         
-        if es.conditions["display_feedback"][0] == 'block_found':
+        if es.conditions["display_feedback"].iloc[0] == 'block_found':
             outro_text_2 = visual.TextStim(es.win, 'In this block, you found ' + str(self.block_found) + ' stimuli.', pos = (0,-150), units = 'pix', height = 50)
             outro_text_2.draw()
             
-        if es.conditions["display_feedback"][0] == 'block_score':
+        if es.conditions["display_feedback"].iloc[0] == 'block_score':
             outro_text_2 = visual.TextStim(es.win, 'In this block, you scored ' + str(self.block_score) + ' points.', pos = (0,-150), units = 'pix', height = 50)
             outro_text_2.draw()
             
@@ -365,39 +366,39 @@ class Item():
     def get_col_from_class(self, cond):
 
         if self.item_class == "targ_class1":
-            colour = cond["targ1_col"][0]
+            colour = cond["targ1_col"].iloc[0]
         elif self.item_class == "targ_class2":
-            colour = cond["targ2_col"][0]
+            colour = cond["targ2_col"].iloc[0]
         elif self.item_class == "dist_class1":
-            colour = cond["dist1_col"][0]
+            colour = cond["dist1_col"].iloc[0]
         elif self.item_class == "dist_class2":
-            colour = cond["dist2_col"][0]
+            colour = cond["dist2_col"].iloc[0]
 
         return(colour)
 
     def get_shape_from_class(self, cond):
         
         if self.item_class == "targ_class1":
-            edges = int(cond["targ1_shape"][0])
+            edges = int(cond["targ1_shape"].iloc[0])
         elif self.item_class == "targ_class2":
-            edges = int(cond["targ2_shape"][0])
+            edges = int(cond["targ2_shape"].iloc[0])
         elif self.item_class == "dist_class1":
-            edges = int(cond["dist1_shape"][0])
+            edges = int(cond["dist1_shape"].iloc[0])
         elif self.item_class == "dist_class2":
-            edges = int(cond["dist2_shape"][0])
+            edges = int(cond["dist2_shape"].iloc[0])
             
         return(edges)
     
     def get_points_from_class(self, cond):
         
         if self.item_class == "targ_class1":
-            points = int(cond["targ1_points"][0])
+            points = int(cond["targ1_points"].iloc[0])
         elif self.item_class == "targ_class2":
-            points = int(cond["targ2_points"][0])
+            points = int(cond["targ2_points"].iloc[0])
         elif self.item_class == "dist_class1":
-            points = int(cond["dist1_points"][0])
+            points = int(cond["dist1_points"].iloc[0])
         elif self.item_class == "dist_class2":
-            points = int(cond["dist2_points"][0])
+            points = int(cond["dist2_points"].iloc[0])
             
         return(points)
 
@@ -409,8 +410,8 @@ class Trial():
         self.condition = cond 
         self.block = block
 
-        self.n_rows = int(cond["n_row"][0])
-        self.n_cols = int(cond["n_col"][0])
+        self.n_rows = int(cond["n_row"].iloc[0])
+        self.n_cols = int(cond["n_col"].iloc[0])
 
         # counter for how many attempts have been made for this trial
         self.attempts = 0
@@ -425,7 +426,7 @@ class Trial():
         self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width)/2 - 50, int(exp_settings.scrn_height)/2 - 50), units = 'pix')
 
         # end trial rules
-        self.max_time = int(cond["max_time"][0])
+        self.max_time = int(cond["max_time"].iloc[0])
         
         # log of selected items
         self.selected_items = [] 
@@ -441,7 +442,7 @@ class Trial():
         for ii in self.items:
 
             # check do not overlap with the line
-            if self.condition["display_line"][0] != "off":
+            if self.condition["display_line"].iloc[0] != "off":
                 x0 = ii.poly.pos[0]
                 x1 = self.line.start[0]
                 x2 = self.line.end[0]
@@ -502,7 +503,7 @@ class Trial():
 
     def item_placements(self, experiment, cond):
         
-        place_rule = str(cond["placement_rule"][0])
+        place_rule = str(cond["placement_rule"].iloc[0])
 
         if place_rule == "cardinal":
             grid = get_grid(self.n_rows, self.n_cols, 0, experiment)
@@ -521,15 +522,15 @@ class Trial():
     def item_details(self, cond):
 
         # note, just now we will hardcode 2 classes for targ/dists
-        self.n_targ = round(float(cond["prop_target"][0]) * self.n_items)
+        self.n_targ = round(float(cond["prop_target"].iloc[0]) * self.n_items)
         n_dist = self.n_items - self.n_targ
 
         # calcualte number of targets of each type
-        targ_class1 = round(self.n_targ * float(cond["prop_targ1"][0]))
+        targ_class1 = round(self.n_targ * float(cond["prop_targ1"].iloc[0]))
         targ_class2 = self.n_targ - targ_class1
 
         # calcualte number of distracters of each type
-        dist_class1 = round(n_dist * float(cond["prop_dist1"][0]))
+        dist_class1 = round(n_dist * float(cond["prop_dist1"].iloc[0]))
         dist_class2 = n_dist - dist_class1
 
         item_class = np.array(["targ_class1", "targ_class2", "dist_class1", "dist_class2"])
@@ -567,7 +568,7 @@ class Trial():
         return(items)
 
     def update_score(self, cond, selected_item, es):
-        self.feedback_type = cond["display_feedback"][0]
+        self.feedback_type = cond["display_feedback"].iloc[0]
         self.score = self.score + selected_item.points
         
         if self.feedback_type == "trial_score":
@@ -624,14 +625,14 @@ class Trial():
         self.items = self.create_items(self.condition, exp_settings)
 
         # do we want a line?
-        if self.condition["display_line"][0] == "vert":
+        if self.condition["display_line"].iloc[0] == "vert":
             self.line = visual.Line(exp_settings.win, 
                 start =(0,-1), 
                 end =(0,1), 
                 units = 'height',
                 lineWidth = 5, lineColor = "white")
             self.line.autoDraw = True
-        elif self.condition["display_line"][0] == "horz":
+        elif self.condition["display_line"].iloc[0] == "horz":
             self.line = visual.Line(exp_settings.win, 
                 start =(-1,0), 
                 end =(1,0), 
@@ -649,7 +650,7 @@ class Trial():
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
-            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"][0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
+            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
 
         for ii in self.items:  
             ii.poly.autoDraw = True
@@ -657,7 +658,7 @@ class Trial():
         # are we eyetracking?
         if exp_settings.track_eyes == "track":
             print("start recording")
-            exp_settings.el_tracker.sendMessage('CONDITION %s' % self.condition["label"][0])
+            exp_settings.el_tracker.sendMessage('CONDITION %s' % self.condition["label"].iloc[0])
             exp_settings.el_tracker.sendMessage('BLOCK %s' % self.block)
             exp_settings.el_tracker.sendMessage('TRIALID %d' % self.n)
             exp_settings.el_tracker.sendMessage('ATTEMPT %d' % self.attempts)
@@ -669,7 +670,7 @@ class Trial():
         
         # save a frame, if wanted.
         if exp_settings.screenshot == "screenshot":
-            self.imageName = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"][0]) + "_" + str(self.n)
+            self.imageName = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n)
             exp_settings.win.getMovieFrame()
             exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageName + '.png'))
 
@@ -726,26 +727,26 @@ class Trial():
 
                     # add info to log
                     # person, block, condition, trial, attempt, id, found, score, item_class, x, y, rt
-                    exp_settings.dataFile.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"][0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
+                    exp_settings.dataFile.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
                       
             
             # check if we have reached the max trial time
             if clock.getTime() > self.max_time:
                 keep_going = False
                 self.score = 0
-                if self.condition["stopping_rule"][0] == "timer":
+                if self.condition["stopping_rule"].iloc[0] == "timer":
                     self.complete = True
                 else:
                     self.complete = False
 
             # check if we have reached the point threshold!
-            if self.condition["stopping_rule"][0] == "points":
-                if self.score >= int(self.condition["point_threshold"][0]):
+            if self.condition["stopping_rule"].iloc[0] == "points":
+                if self.score >= int(self.condition["point_threshold"].iloc[0]):
                     keep_going = False
                     self.complete = True
 
             # if we're doing exhaustive foraging, check
-            if self.condition["stopping_rule"][0] == "exhaustive":
+            if self.condition["stopping_rule"].iloc[0] == "exhaustive":
                 # print("we have " + str(self.n_found) + " pokemon out of " + str(self.n_targ))
                 if (self.n_found == self.n_targ):
                     # print("gotta collect them all!")
@@ -767,7 +768,7 @@ class Trial():
         for ii in self.items:
             ii.poly.autoDraw = False
 
-        if self.condition["display_line"][0] != "off":
+        if self.condition["display_line"].iloc[0] != "off":
            self.line.autoDraw = False
         
         # If eyetracking, stop it
