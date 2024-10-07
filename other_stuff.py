@@ -74,7 +74,7 @@ class Experiment():
             # connect to eyelink host pc
             self.el_tracker = pl.EyeLink("100.1.1.1")
             # open edf data file - need to decide what we should call edf files
-            self.edf_fname = self.person[0]
+            self.edf_fname = self.p_id
             self.edf_file = self.edf_fname + ".edf"
             self.el_tracker.openDataFile(self.edf_file)
             # Send over a command to let the tracker know the correct screen resolution
@@ -91,6 +91,7 @@ class Experiment():
             self.win.flip()
             # do tracker set up?
             self.el_tracker.doTrackerSetup()
+
 
         # display intro 
         self.display_intro_exp()
@@ -142,6 +143,8 @@ class Experiment():
             # calibrate eye tracker, if doing eye tracking
             if self.track_eyes == "track":
                 self.el_tracker.doTrackerSetup()
+                # make sure mouse is visible
+                self.win.mouseVisible = True
             # run the block    
             block.run(self)
         
@@ -195,9 +198,9 @@ class Experiment():
             block = Block(block_file["label"].iloc[blk], block_file["conditions"].iloc[blk], block_file["n_trials_per_cond"].iloc[blk], block_file["group"].iloc[blk], block_file["intro_text"].iloc[blk], block_file["outro_text"].iloc[blk], block_file["practice"].iloc[blk], self)
             
             if self.block_style == "counter_balanced":
-                if block_file["group"][blk] == "1":
+                if block_file["group"].iloc[blk] == "1":
                     blocks_one.append(block)
-                elif block_file["group"][blk] == "2":
+                elif block_file["group"].iloc[blk] == "2":
                     blocks_two.append(block)
                 else:
                     blocks.append(block)
