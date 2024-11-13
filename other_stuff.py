@@ -736,7 +736,6 @@ class Trial():
             # check if we have reached the max trial time
             if clock.getTime() > self.max_time:
                 keep_going = False
-                self.score = 0
                 if self.condition["stopping_rule"].iloc[0] == "timer":
                     self.complete = True
                 else:
