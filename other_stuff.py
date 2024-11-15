@@ -426,7 +426,7 @@ class Trial():
         # how many targets have been clicked on so far (this trial)?
         self.n_found = 0
         # set up feedback
-        self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width)/2 - 50, int(exp_settings.scrn_height)/2 - 50), units = 'pix')
+        self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width - exp_settings.width_border)/2 - 50, int(exp_settings.scrn_height - exp_settings.height_border)/2 - 50), units = 'pix')
 
         # end trial rules
         self.max_time = int(cond["max_time"].iloc[0])
