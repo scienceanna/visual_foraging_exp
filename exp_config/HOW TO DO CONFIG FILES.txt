@@ -46,7 +46,7 @@ point_threshold: what is the points threshold for this condition?
 max_time: what is the maximum amount of time that someone can spend on a trial? Note that this applies whatever stopping rule is applied - however, for stopping_rule options other than 'timer', reaching the maximum time will prompt a repeat of the trial.
 distracter_click: what should happen if someone clicks on a distractor. Options - 'terminate' (i.e. end the trial, and don't repeat), 'recycle' (i.e. end the trial and do repeat), 'as_target' (i.e. treat the same as a target).
 display_line: should we display a line? Options - 'horz' (i.e. horizontal line), 'vert' (i.e. vertical line), 'off' (i.e. no line).
-display_feedback: should we display feedback? Options - 'off' (i.e. don't display feedback), 'trial_found' (i.e. display the total number of targets found in the trial, in top right), 'trial_score' (i.e. display total number of targets found in trial, in top right), 'block_found' (i.e. give the total number found at the end of the block), 'block_score' (i.e. give the total score at the end of the block)
+display_feedback: should we display feedback? Options - 'off' (i.e. don't display feedback), 'trial_found' (i.e. display the total number of targets found in the trial, in top right), 'trial_score' (i.e. display total score of trial, in top right), 'block_found' (i.e. give the total number found at the end of the block), 'block_score' (i.e. give the total score at the end of the block)
 targ1_col: colour of target 1
 targ2_col: colour of target 2
 dist1_col: colour of distractor 1
