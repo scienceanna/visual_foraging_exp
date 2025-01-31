@@ -219,8 +219,6 @@ class Experiment():
                 else:
                     blocks = blocks + blocks_two + blocks_one
                 
-
-                
         return(blocks)
         
     def display_intro_exp(self):
@@ -638,14 +636,17 @@ class Trial():
                 units = 'height',
                 lineWidth = 5, lineColor = "white")
             self.line.autoDraw = True
+        elif self.condition["display_line"][0] == "circle":
+            self.line = visual.Circle(exp_settings.win, fillColor = "None");
+            self.line.autoDraw = True
         
         # make sure items are not overlapping        
-        jiggle_ctr = 0
-        max_jiggle_attempts = 10
-        n_fixed = 10
-        while (n_fixed > 0) & (jiggle_ctr < max_jiggle_attempts): 
-            jiggle_ctr = jiggle_ctr + 1
-            n_fixed = self.check_and_fix_overlap()
+        #jiggle_ctr = 0
+        #max_jiggle_attempts = 10
+        #n_fixed = 10
+        #while (n_fixed > 0) & (jiggle_ctr < max_jiggle_attempts): 
+        #    jiggle_ctr = jiggle_ctr + 1
+         #   n_fixed = self.check_and_fix_overlap()
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:

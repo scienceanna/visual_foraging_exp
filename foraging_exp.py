@@ -3,7 +3,7 @@ from psychopy.event import Mouse
 from psychopy.hardware import keyboard
 from other_stuff import *
 
-experiment = Experiment("circles")
+experiment = Experiment("test")
 
 # run the experiment
 experiment.run()
