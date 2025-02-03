@@ -636,8 +636,22 @@ class Trial():
                 units = 'height',
                 lineWidth = 5, lineColor = "white")
             self.line.autoDraw = True
-        elif self.condition["display_line"][0] == "circle":
-            self.line = visual.Circle(exp_settings.win, fillColor = "None");
+        elif "circle" in self.condition["display_line"][0]:
+
+            # extract radius
+            number_str = ""
+
+            for char in self.condition["display_line"][0]:
+              if char.isdigit():
+                number_str += char
+
+            if number_str:
+                self.radius = int(number_str)
+                print(self.radius)  # Output: 150
+
+            self.line = visual.Circle(exp_settings.win, 
+                radius = self.radius/100,
+                lineColor = "black", fillColor = "none");
             self.line.autoDraw = True
         
         # make sure items are not overlapping        

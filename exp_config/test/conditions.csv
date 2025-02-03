@@ -12,7 +12,7 @@ stopping_rule,points
 point_threshold,2
 max_time,10
 distracter_click,terminate
-display_line,circle
+display_line,circle_25
 display_feedback,block_score
 targ1_col,Red
 targ2_col,Green
