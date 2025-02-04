@@ -223,8 +223,6 @@ class Experiment():
                 else:
                     blocks = blocks + blocks_two + blocks_one
                 
-
-                
         return(blocks)
         
     def display_intro_exp(self):
@@ -642,14 +640,31 @@ class Trial():
                 units = 'height',
                 lineWidth = 5, lineColor = "white")
             self.line.autoDraw = True
+        elif "circle" in self.condition["display_line"][0]:
+
+            # extract radius
+            number_str = ""
+
+            for char in self.condition["display_line"][0]:
+              if char.isdigit():
+                number_str += char
+
+            if number_str:
+                self.radius = int(number_str)
+                print(self.radius)  # Output: 150
+
+            self.line = visual.Circle(exp_settings.win, 
+                radius = self.radius/100,
+                lineColor = "black", fillColor = "none");
+            self.line.autoDraw = True
         
         # make sure items are not overlapping        
-        jiggle_ctr = 0
-        max_jiggle_attempts = 10
-        n_fixed = 10
-        while (n_fixed > 0) & (jiggle_ctr < max_jiggle_attempts): 
-            jiggle_ctr = jiggle_ctr + 1
-            n_fixed = self.check_and_fix_overlap()
+        #jiggle_ctr = 0
+        #max_jiggle_attempts = 10
+        #n_fixed = 10
+        #while (n_fixed > 0) & (jiggle_ctr < max_jiggle_attempts): 
+        #    jiggle_ctr = jiggle_ctr + 1
+         #   n_fixed = self.check_and_fix_overlap()
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
@@ -842,10 +857,15 @@ def get_grid(rows, cols, theta, es):
     # some parameters
     jiggle_param = es.jiggle # how much random jitter should we add
 
+    # if we are using a circular aperture, we will need to make the underlying grid larger
+
     xmin = es.width_border
     xmax = es.scrn_width - es.width_border
     ymin = es.height_border
     ymax = es.scrn_height - es.height_border
+
+    r = math.sqrt((xmax - xmin) * (ymax - ymin)) / math.pi
+    print(r)
 
     # create one-dimensional arrays for x and y
     # generate twice as many as required so 
@@ -861,16 +881,14 @@ def get_grid(rows, cols, theta, es):
     x = x.reshape((np.prod(x.shape),))
     y = y.reshape((np.prod(y.shape),))
 
- 
 
     # scale to correct size
     x = (es.scrn_width  - 2*es.width_border)  * x + es.width_border
     y = (es.scrn_height - 2*es.height_border) * y + es.height_border
   
     idx = (x > es.width_border) * (x < es.scrn_width - es.width_border) * (y > es.height_border) * (y < es.scrn_height - es.height_border) 
-    x = x[idx]
-    y = y[idx]
-
+    #x = x[idx]
+    #y = y[idx]
 
     # translate so that (0, 0) is the centre of the screen
     x = x - es.scrn_width/2
@@ -883,8 +901,10 @@ def get_grid(rows, cols, theta, es):
     x = xr
     y = yr 
     
-    #idx = ((x)**2 + (y)**2) < 500**2
- 
+    # take only points that fall inside a circle
+    idx = ((x)**2 + (y)**2) < r**2
+    x = x[idx]
+    y = y[idx]
 
     # apply random jiggle and round
     x = np.around(x + jiggle_param * np.random.randn(len(x)))
