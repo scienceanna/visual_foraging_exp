@@ -1,7 +1,7 @@
 attribute,cond2
 label,test2
-n_row,5
-n_col,5
+n_row,9
+n_col,9
 placement_rule,cardinal
 prop_target,0.5
 prop_targ1,0.6

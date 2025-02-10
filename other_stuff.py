@@ -651,7 +651,8 @@ class Trial():
 
             self.line = visual.Circle(exp_settings.win, 
                 radius = self.radius/100,
-                lineColor = "black", fillColor = "none");
+                lineWidth = 5, lineColor = "white",
+                fillColor = "none");
             self.line.autoDraw = True
         
         # make sure items are not overlapping        
