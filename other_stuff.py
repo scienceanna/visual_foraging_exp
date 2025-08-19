@@ -8,7 +8,6 @@ import math
 import random
 import os.path
 
-
 class Experiment():
     def __init__(self, exp_name):
         
@@ -625,6 +624,15 @@ class Trial():
         # create all the items for this trial
         self.items = self.create_items(self.condition, exp_settings)
 
+        # display background, if we have one
+
+        img_stim = visual.ImageStim(
+            win = exp_settings.win,
+            image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
+            size = (1, 1),  # Size in pixels
+            pos = (0, 0))
+        img_stim.autoDraw = True
+
         # do we want a line?
         if self.condition["display_line"].iloc[0] == "vert":
             self.line = visual.Line(exp_settings.win, 
@@ -633,6 +641,7 @@ class Trial():
                 units = 'height',
                 lineWidth = 5, lineColor = "white")
             self.line.autoDraw = True
+
         elif self.condition["display_line"].iloc[0] == "horz":
             self.line = visual.Line(exp_settings.win, 
                 start =(-1,0), 
@@ -640,6 +649,7 @@ class Trial():
                 units = 'height',
                 lineWidth = 5, lineColor = "white")
             self.line.autoDraw = True
+
         elif "circle" in self.condition["display_line"][0]:
 
             # extract radius
@@ -651,7 +661,7 @@ class Trial():
 
             if number_str:
                 self.radius = int(number_str)
-                print(self.radius)  # Output: 150
+                #print(self.radius)  # Output: 150
 
             self.line = visual.Circle(exp_settings.win, 
                 radius = self.radius/100,
@@ -666,6 +676,8 @@ class Trial():
         #while (n_fixed > 0) & (jiggle_ctr < max_jiggle_attempts): 
         #    jiggle_ctr = jiggle_ctr + 1
          #   n_fixed = self.check_and_fix_overlap()
+
+    
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
@@ -824,34 +836,26 @@ def clumpy_placement(n_items, es):
 
     return(list(zip(x, y, item_id)))
 
-def gen_1overf_noise(beta, filter_freq = -0.1, n = 256):
 
-    # Generate indices
-    nq = n // 2
-    V = -np.tile(np.arange(-nq, nq).reshape(-1, 1), (1, 2 * nq))
-    U = np.tile(np.arange(-nq, nq), (2 * nq, 1))
-    f = np.sqrt(U**2 + V**2)
+def gen_1overf_noise(beta=1.0, n=256):
+    """Generate 1/f noise."""
+    # Create frequency grid
+    freqs = np.fft.fftfreq(n)
+    fx, fy = np.meshgrid(freqs, freqs)
+    f = np.sqrt(fx**2 + fy**2)
+    f[0, 0] = 1  # Avoid division by zero
+    
+    # Generate 1/f^beta spectrum
+    spectrum = f**(-beta/2) * np.exp(1j * 2*np.pi * np.random.random((n, n)))
+    spectrum[0, 0] = 0  # Zero DC component
+    
+    # Generate noise
+    noise = np.fft.ifft2(spectrum).real
+    # Scale to [0, 1]
+    noise = noise - noise.min()
+    noise = noise / noise.max()
 
-    # Generate random phase and magnitude
-    theta = np.random.rand(n, n) * 2 * np.pi
-    mag = np.power(f, -beta)
-    lpf = 1-np.exp(-filter_freq*f)
-   
-    mag = np.fft.ifftshift(lpf*mag)
-    mag[0, 0] = 0  # Zero d.c.
-
-    # Convert to cartesian coordinates
-    x, y = np.cos(theta) * mag, np.sin(theta) * mag
-    F = x + 1j * y
-
-    # Perform Inverse FFT
-    ht = np.fft.ifft2(F).real
-
-    # Adjust to [0, 1]
-    ht = ht - np.min(ht)
-    ht = ht / np.max(ht)
-
-    return(ht)
+    return noise
 
 def get_grid(rows, cols, theta, es):
 
@@ -866,7 +870,6 @@ def get_grid(rows, cols, theta, es):
     ymax = es.scrn_height - es.height_border
 
     r = math.sqrt((xmax - xmin) * (ymax - ymin)) / math.pi
-    print(r)
 
     # create one-dimensional arrays for x and y
     # generate twice as many as required so 
@@ -881,7 +884,6 @@ def get_grid(rows, cols, theta, es):
     # convert into 1D vector
     x = x.reshape((np.prod(x.shape),))
     y = y.reshape((np.prod(y.shape),))
-
 
     # scale to correct size
     x = (es.scrn_width  - 2*es.width_border)  * x + es.width_border
