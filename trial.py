@@ -36,9 +36,10 @@ class Trial():
 
     def check_and_fix_overlap(self):
 
+        # For each pair of items, check that they do not overlap
+        # If they do, adjust (jiggle!)
+
         rejiggle_sep_multipler = 1.5
-        # for each pair of items, check that they do not overlap
-        # if they do, adjust
 
         n_fixed = 0
 
@@ -228,7 +229,6 @@ class Trial():
         self.items = self.create_items(self.condition, exp_settings)
 
         # display background, if we have one
-
         img_stim = visual.ImageStim(
             win = exp_settings.win,
             image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
@@ -279,8 +279,6 @@ class Trial():
         #while (n_fixed > 0) & (jiggle_ctr < max_jiggle_attempts): 
         #    jiggle_ctr = jiggle_ctr + 1
          #   n_fixed = self.check_and_fix_overlap()
-
-    
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
@@ -296,7 +294,6 @@ class Trial():
             exp_settings.el_tracker.sendMessage('BLOCK %s' % self.block)
             exp_settings.el_tracker.sendMessage('TRIALID %d' % self.n)
             exp_settings.el_tracker.sendMessage('ATTEMPT %d' % self.attempts)
-            
             exp_settings.el_tracker.startRecording(1, 1, 1, 1)
 
         # update the window
@@ -308,8 +305,8 @@ class Trial():
             exp_settings.win.getMovieFrame()
             exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageName + '.png'))
 
+        # loop while waiting for keypress/mouseclick/timeout
         clock = core.Clock()
-
         keep_going = True
 
         while keep_going:
@@ -317,7 +314,7 @@ class Trial():
             # can escape out and it will save
             key = self.get_keypress()
             if key is None:
-                ...# No response
+                ... # No response
             elif key == 'escape':
                 self.shutdown(exp_settings)
             
