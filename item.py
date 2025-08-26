@@ -11,7 +11,9 @@ class Item():
         self.item_class = item_class
         self.is_target = is_target 
 
-        # now work out what colour and shape the item should be
+        # work out what colour and shape the item should be
+        # this depends on what condition we're in, and what 
+        # item_class we have assigned
         self.colour = self.get_col_from_class(cond)
         self.shape = self.get_shape_from_class(cond)
         self.points = self.get_points_from_class(cond)
@@ -19,7 +21,7 @@ class Item():
         # randomise orientation
         self.orient = random.randint(0,360)
 
-        # now create polygon
+        # now create our polygon
         self.poly = visual.Polygon(
             win = exp_settings.win, 
             units = 'pix', 
