@@ -1,7 +1,6 @@
 # import some libraries from PsychoPy
 from psychopy.event import Mouse
 from psychopy.hardware import keyboard
-import re
 import pandas as pd
 import random
 import os.path
@@ -11,8 +10,10 @@ from block import *
 class Experiment():
     def __init__(self, exp_name):
         
+        # First, set up experiment
         print("*** Setting up experiment ***")
         
+        # Create output folders
         self.exp_name = exp_name
         self.exp_folder = "exp_config/" + exp_name + "/"
         self.data_folder = "data/" + exp_name + "/"
@@ -23,24 +24,27 @@ class Experiment():
                os.makedirs(self.data_folder)
                print("A new data directory has been created")
 
-        self.person = self.collect_person_info()
-        
+        # Ask for person demograpics (pop-up window)
+        self.person = self.collect_person_info() 
         self.p_id = self.person.pop("Participant number")
         self.age = self.person.pop("Age")
         self.gender = self.person.pop("Gender")
 
-        # Setting up experimental file
+        # Setting up experimental files
         self.date = data.getDateStr()
-        #self.fileName = str(self.person[0]) + "_" + str(self.person[1]) + "_" + str(self.person[2]) + "_" + self.date
         self.fileName = str(self.p_id) + "_" + str(self.age) + "_" + str(self.gender) + "_" + self.date
-        self.dataFile = open(self.data_folder + self.fileName+'_found.csv', 'w') 
-        self.dataFile.write('person,block,condition,trial,attempt,id,found,score,item_class,x,y,rt\n') # this is d$found
         
-        # setting up stim file
+        # this tracks the behaviour. I.e., the items that were selected
+        # this corresponds to d$found in the FoMo import code
+        self.dataFile = open(self.data_folder + self.fileName+'_found.csv', 'w') 
+        self.dataFile.write('person,block,condition,trial,attempt,id,found,score,item_class,x,y,rt\n') 
+        
+        # this stores information on the stimulus (including items that were never selected)
+        # this corresponds to d$stim in the FoMo import code
         self.dataFileStim = open(self.data_folder + self.fileName+'_stim.csv', 'w')
         self.dataFileStim.write('person,block,condition,trial,attempt,id,item_class,x,y\n') # this is d$stim
         
-        # import exp config
+        # import exp config - this is saved in a csv
         self.import_exp_config()
             
         # create screen, mouse and keyboard
@@ -56,14 +60,13 @@ class Experiment():
             closeShape=False,
             lineColor="white")
         
-        # import conditions
+        # import conditions - this is saved in a csv file
         self.conditions = self.get_conditions()
         
         # read in blocks, and pblocks (pblocks may be empty)
         self.blocks = self.get_blocks(False)
         if os.path.isfile(self.exp_folder+"pblocks.csv"):
             self.pblocks = self.get_blocks(practice = True)
-        print("imported blocks and pblocks")
 
         # set up eye tracking, if using
         if self.track_eyes == "track":
@@ -91,18 +94,17 @@ class Experiment():
             # do tracker set up?
             self.el_tracker.doTrackerSetup()
 
-
         # display intro 
         self.display_intro_exp()
         
     def collect_person_info(self):
+
         # get some basic experimental info
         info = {'Participant number':'1', 'Age':99, 'Gender': 'f'}
         
         dictDlg = gui.DlgFromDict(dictionary=info,
         title='Foraging experiment', order = ['Participant number', 'Age', 'Gender'])
         
-        #ok_data = myDlg.show()  # show dialog and wait for OK or Cancel
         if dictDlg.OK:  # or if ok_data is not None
             return(info)
         else:
@@ -110,9 +112,10 @@ class Experiment():
             core.quit()
         
     def import_exp_config(self):
+
             # read in config file
             exp_config = pd.read_csv(self.exp_folder+"exp_config.csv")
-            # save config file
+            # save config file to person folder
             exp_config.to_csv(self.data_folder + self.fileName + '_exp_config.csv')
             exp_config = exp_config.set_index("attribute").T # transpose
 
@@ -135,18 +138,25 @@ class Experiment():
 
     def run(self):
 
+        # this is where we run the experiment!
+        # in short, we run each block, one at a time
+
         print("*** running experiment with", len(self.blocks), " blocks ***")
 
         for block in self.blocks:
-            print("about to run block " + block.label)
+
             # calibrate eye tracker, if doing eye tracking
             if self.track_eyes == "track":
+
                 self.el_tracker.doTrackerSetup()
                 # make sure mouse is visible
                 self.win.mouseVisible = True
+
+            print("about to run block " + block.label)
             # run the block    
             block.run(self)
         
+        # Experiment is now complete:
         # if using eyetracking
         # Download the EDF data file from the Host PC to a local data folder
         # parameters: source_file_on_the_host, destination_file_on_local_drive
@@ -160,7 +170,7 @@ class Experiment():
         self.dataFile.close()
         self.dataFileStim.close()
         
-        # display outro
+        # display outro text
         self.display_outro_exp()
 
     def get_conditions(self):
