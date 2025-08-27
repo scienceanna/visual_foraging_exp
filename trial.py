@@ -111,6 +111,9 @@ class Trial():
 
         if place_rule == "cardinal":
             grid = get_grid(self.n_rows, self.n_cols, 0, experiment)
+            print("dims")
+            print(self.n_rows)
+            print(self.n_cols)
 
         if place_rule == "rotated":
             grid = get_grid(self.n_rows, self.n_cols, np.pi/4, experiment)
@@ -125,21 +128,33 @@ class Trial():
 
     def item_details(self, cond):
 
-        # note, just now we will hardcode 2 classes for targ/dists
-        self.n_targ = round(float(cond["prop_target"].iloc[0]) * self.n_items)
-        n_dist = self.n_items - self.n_targ
+        # import from our csv
+        proportions = cond["proportions"].iloc[0]
+        proportions = np.array(proportions.split("-"), dtype = np.float32)
+        
+        class_type = cond["class_type"].iloc[0]
+        class_type = np.array(class_type.split("-"), dtype = object)
 
-        # calcualte number of targets of each type
-        targ_class1 = round(self.n_targ * float(cond["prop_targ1"].iloc[0]))
-        targ_class2 = self.n_targ - targ_class1
+        points = cond["points"].iloc[0]
+        points = list(map(float, points.split("-")))
 
-        # calcualte number of distracters of each type
-        dist_class1 = round(n_dist * float(cond["prop_dist1"].iloc[0]))
-        dist_class2 = n_dist - dist_class1
+        colours = cond["colours"].iloc[0]
+        colours = colours.split("-")
 
-        item_class = np.array(["targ_class1", "targ_class2", "dist_class1", "dist_class2"])
-        item_class = np.repeat(item_class, [targ_class1, targ_class2, dist_class1, dist_class2], axis = 0)
+        shapes = cond["shapes"].iloc[0]
+        shapes = shapes.split("-")
 
+        # check proportions sum to 1
+        proportions = proportions / sum(proportions)
+
+        # calculate the number of items of each type
+        n = list(map(int, np.round(self.n_items * proportions)))
+        
+        #if  n != self.n_items:
+         #   print("mismatch number of items.")
+     
+
+        item_class = np.repeat(class_type, n, axis = 0)
         # randomly shuffle labels here
         item_class = np.random.permutation(item_class)
 
@@ -223,6 +238,8 @@ class Trial():
         # how many lattice points (items) did we fit on the grid?
         # note: this may have changed from row*col due to rotation
         self.n_items = len(self.grid)
+        print("n items = ")
+        print(self.n_items)
         # now create the items that we need
         self.item_class = self.item_details(self.condition)
         # create all the items for this trial
@@ -411,27 +428,3 @@ class Trial():
         es.win.flip()
         core.wait(1)
 
-def clumpy_placement(n_items, es):
- 
-    # first get the underlying density map
-    ht = gen_1overf_noise(3)
-
-    n_placed = 0
-    x = []
-    y = []
-
-    while n_placed < n_items:
-
-        # sample a potential position
-        xp = int(np.around(np.random.uniform(0, 255, 1)))
-        yp = int(np.around(np.random.uniform(0, 255, 1)))
-
-        # keep if with probability determined by ht
-        if np.random.binomial(size=1, n=1, p = ht[xp, yp]) == 1:
-            x.append(xp/255 * (es.scrn_width - 2*es.width_border ) - es.scrn_width/2 + es.width_border)
-            y.append(yp/255 * (es.scrn_height - 2*es.height_border) - es.scrn_height/2 + es.height_border)
-            n_placed = n_placed + 1
-
-    item_id = range(1, n_items+1)
-
-    return(list(zip(x, y, item_id)))

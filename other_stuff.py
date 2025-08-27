@@ -26,8 +26,59 @@ def get_grid(rows, cols, theta, es):
     # some parameters
     jiggle_param = es.jiggle # how much random jitter should we add
 
-    # if we are using a circular aperture, we will need to make the underlying grid larger
+    xmin = es.width_border
+    xmax = es.scrn_width - es.width_border
+    ymin = es.height_border
+    ymax = es.scrn_height - es.height_border
 
+    # create one-dimensional arrays for x and y
+    # generate twice as many as required so 
+    # we will fill the search space with items
+    # even after rotation
+
+    x = np.linspace(-1, 2, 3*cols) 
+    y = np.linspace(-1, 2, 3*rows)
+
+    # create the mesh based on these arrays
+    x, y = np.meshgrid(x, y)
+
+    # convert into 1D vector
+    x = x.reshape((np.prod(x.shape),))
+    y = y.reshape((np.prod(y.shape),))
+
+    # scale to correct size
+    x = (es.scrn_width  - 2*es.width_border)  * x + es.width_border
+    y = (es.scrn_height - 2*es.height_border) * y + es.height_border
+  
+    idx = (x > es.width_border) * (x < es.scrn_width - es.width_border) * (y > es.height_border) * (y < es.scrn_height - es.height_border) 
+    x = x[idx]
+    y = y[idx]
+
+    # translate so that (0, 0) is the centre of the screen
+    x = x - es.scrn_width/2
+    y = y - es.scrn_height/2
+
+    # rotate lattice
+    xr = np.cos(theta) * x - np.sin(theta) * y
+    yr = np.sin(theta) * x + np.cos(theta) * y
+
+    x = xr
+    y = yr 
+    
+    # apply random jiggle and round
+    x = np.around(x + jiggle_param * np.random.randn(len(x)))
+    y = np.around(y + jiggle_param * np.random.randn(len(y)))
+
+    item_id = range(1, rows*cols+1)
+
+    return(list(zip(x, y, item_id)))
+
+def get_circ_app_grid(rows, cols, theta, es):
+
+    # some parameters
+    jiggle_param = es.jiggle # how much random jitter should we add
+
+    # if we are using a circular aperture, we will need to make the underlying grid larger
     xmin = es.width_border
     xmax = es.scrn_width - es.width_border
     ymin = es.height_border
@@ -127,3 +178,30 @@ def closest_point_on_line(ax, ay, bx, by, px, py):
     qy = ay + t * aby
 
     return qx, qy
+
+
+
+def clumpy_placement(n_items, es):
+ 
+    # first get the underlying density map
+    ht = gen_1overf_noise(3)
+
+    n_placed = 0
+    x = []
+    y = []
+
+    while n_placed < n_items:
+
+        # sample a potential position
+        xp = int(np.around(np.random.uniform(0, 255, 1)))
+        yp = int(np.around(np.random.uniform(0, 255, 1)))
+
+        # keep if with probability determined by ht
+        if np.random.binomial(size=1, n=1, p = ht[xp, yp]) == 1:
+            x.append(xp/255 * (es.scrn_width - 2*es.width_border ) - es.scrn_width/2 + es.width_border)
+            y.append(yp/255 * (es.scrn_height - 2*es.height_border) - es.scrn_height/2 + es.height_border)
+            n_placed = n_placed + 1
+
+    item_id = range(1, n_items+1)
+
+    return(list(zip(x, y, item_id)))

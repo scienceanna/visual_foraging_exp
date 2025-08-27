@@ -1,8 +1,8 @@
 attribute,value
 scrn_width,1500
 scrn_height,1500
-width_border,250
-height_border,100
+width_border,500
+height_border,500
 jiggle,0
 block_style,randomised
 global_practice,practice
