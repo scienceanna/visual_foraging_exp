@@ -126,14 +126,26 @@ class Trial():
 
         return(grid)
 
-    def item_details(self, cond):
+    def item_class_desigations(self, cond):
 
-        # import from our csv
         proportions = cond["proportions"].iloc[0]
         proportions = np.array(proportions.split("-"), dtype = np.float32)
         
-        class_type = cond["class_type"].iloc[0]
-        class_type = np.array(class_type.split("-"), dtype = object)
+
+        # check proportions sum to 1
+        proportions = proportions / sum(proportions)
+
+        # calculate the number of items of each type
+        n = list(map(int, np.round(self.n_items * proportions)))
+
+        item_class = np.repeat(class_type, n, axis = 0)
+
+        # randomly shuffle labels here
+        item_class = np.random.permutation(item_class)
+
+        return(item_class)
+
+    def get_item_properties(self, cond): 
 
         points = cond["points"].iloc[0]
         points = list(map(float, points.split("-")))
@@ -144,23 +156,12 @@ class Trial():
         shapes = cond["shapes"].iloc[0]
         shapes = shapes.split("-")
 
-        # check proportions sum to 1
-        proportions = proportions / sum(proportions)
+        class_type = cond["class_type"].iloc[0]
+        class_type = np.array(class_type.split("-"), dtype = object)
 
-        # calculate the number of items of each type
-        n = list(map(int, np.round(self.n_items * proportions)))
-        
-        #if  n != self.n_items:
-         #   print("mismatch number of items.")
-     
+        return points, colours, shapes, class_type 
 
-        item_class = np.repeat(class_type, n, axis = 0)
-        # randomly shuffle labels here
-        item_class = np.random.permutation(item_class)
-
-        return(item_class)
-
-    def create_items(self, cond, es):
+    def create_items(self, cond, es, col, shp, pts):
 
         # create our list of our items
         items = []
@@ -180,7 +181,7 @@ class Trial():
                 is_targ = 1
 
             # now create a new item
-            new_item = Item(x, y, item_id, item_class, is_targ, cond, es)       
+            new_item = Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)       
 
             items.append(new_item) 
 
@@ -240,10 +241,13 @@ class Trial():
         self.n_items = len(self.grid)
         print("n items = ")
         print(self.n_items)
+
         # now create the items that we need
-        self.item_class = self.item_details(self.condition)
+        self.item_class = self.item_class_desigations(self.condition)
+        self.points, self.colours, self.shapes = self.get_item_properties(self.condition)
+
         # create all the items for this trial
-        self.items = self.create_items(self.condition, exp_settings)
+        self.items = self.create_items(self.condition, exp_settings, self.points, self.colours, self.shapes)
 
         # display background, if we have one
         img_stim = visual.ImageStim(
