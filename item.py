@@ -21,6 +21,8 @@ class Item():
         # randomise orientation
         self.orient = random.randint(0,360)
 
+        print("colour = " + str(self.colour))
+        print("points = " + str(self.points))
         # now create our polygon
         self.poly = visual.Polygon(
             win = exp_settings.win, 

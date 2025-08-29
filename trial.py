@@ -128,18 +128,18 @@ class Trial():
 
     def item_class_desigations(self, cond):
 
+        # get number of item classes
+        n_classes = int(cond["n_item_class"].iloc[0])
+
         proportions = cond["proportions"].iloc[0]
         proportions = np.array(proportions.split("-"), dtype = np.float32)
-        
-
         # check proportions sum to 1
         proportions = proportions / sum(proportions)
 
         # calculate the number of items of each type
         n = list(map(int, np.round(self.n_items * proportions)))
 
-        item_class = np.repeat(class_type, n, axis = 0)
-
+        item_class = np.repeat(np.arange(0, n_classes), n, axis = 0)
         # randomly shuffle labels here
         item_class = np.random.permutation(item_class)
 
@@ -154,14 +154,14 @@ class Trial():
         colours = colours.split("-")
 
         shapes = cond["shapes"].iloc[0]
-        shapes = shapes.split("-")
+        shapes = list(map(int, shapes.split("-")))
 
         class_type = cond["class_type"].iloc[0]
         class_type = np.array(class_type.split("-"), dtype = object)
 
         return points, colours, shapes, class_type 
 
-    def create_items(self, cond, es, col, shp, pts):
+    def create_items(self, cond, es, pts, col, shp, cty):
 
         # create our list of our items
         items = []
@@ -170,10 +170,12 @@ class Trial():
         x, y, item_id = zip(*self.grid)
         xy_pos = zip(x,y,item_id, self.item_class)
         
+        # for each item...
         for x, y, item_id, item_class in xy_pos:
 
             # first, is the item a target?
-            match = re.search("targ", item_class)
+            print(item_class)
+            match = re.search("t", cty[item_class])
 
             if match == None:
                 is_targ = 0
@@ -244,10 +246,11 @@ class Trial():
 
         # now create the items that we need
         self.item_class = self.item_class_desigations(self.condition)
-        self.points, self.colours, self.shapes = self.get_item_properties(self.condition)
+        self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
 
         # create all the items for this trial
-        self.items = self.create_items(self.condition, exp_settings, self.points, self.colours, self.shapes)
+        self.items = self.create_items(self.condition, exp_settings, 
+                                       self.points, self.colours, self.shapes, self.class_types)
 
         # display background, if we have one
         img_stim = visual.ImageStim(
