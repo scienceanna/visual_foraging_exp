@@ -7,7 +7,8 @@ stopping_rule,points
 point_threshold,2
 max_time,10
 distracter_click,terminate
-display_line,circle_25
+display_line,none
+background,none
 display_feedback,block_score
 n_item_class,2
 proportions,0.6-0.4

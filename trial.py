@@ -15,6 +15,7 @@ class Trial():
 
         self.n_rows = int(cond["n_row"].iloc[0])
         self.n_cols = int(cond["n_col"].iloc[0])
+        self.bkgrnd = cond["background"].iloc[0]
 
         # counter for how many attempts have been made for this trial
         self.attempts = 0
@@ -110,10 +111,7 @@ class Trial():
         place_rule = str(cond["placement_rule"].iloc[0])
 
         if place_rule == "cardinal":
-            grid = get_grid(self.n_rows, self.n_cols, 0, experiment)
-            print("dims")
-            print(self.n_rows)
-            print(self.n_cols)
+            grid = get_grid(self.n_rows, self.n_cols, 0, experiment) 
 
         if place_rule == "rotated":
             grid = get_grid(self.n_rows, self.n_cols, np.pi/4, experiment)
@@ -173,19 +171,10 @@ class Trial():
         # for each item...
         for x, y, item_id, item_class in xy_pos:
 
-            # first, is the item a target?
-            print(item_class)
-            match = re.search("t", cty[item_class])
-
-            if match == None:
-                is_targ = 0
-            else: 
-                is_targ = 1
-
+            # is the item a target?
+            is_targ = 1 if re.search("t", cty[item_class]) else 0
             # now create a new item
-            new_item = Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)       
-
-            items.append(new_item) 
+            items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)) 
 
         return(items)
 
@@ -241,8 +230,6 @@ class Trial():
         # how many lattice points (items) did we fit on the grid?
         # note: this may have changed from row*col due to rotation
         self.n_items = len(self.grid)
-        print("n items = ")
-        print(self.n_items)
 
         # now create the items that we need
         self.item_class = self.item_class_desigations(self.condition)
@@ -253,12 +240,13 @@ class Trial():
                                        self.points, self.colours, self.shapes, self.class_types)
 
         # display background, if we have one
-        img_stim = visual.ImageStim(
-            win = exp_settings.win,
-            image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
-            size = (1, 1),  # Size in pixels
-            pos = (0, 0))
-        img_stim.autoDraw = True
+        if self.bkgrnd == "noise":
+            img_stim = visual.ImageStim(
+                win = exp_settings.win,
+                image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
+                size = (1, 1),  # Size in pixels
+                pos = (0, 0))
+            img_stim.autoDraw = True
 
         # do we want a line?
         if self.condition["display_line"].iloc[0] == "vert":

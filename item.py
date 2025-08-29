@@ -13,16 +13,12 @@ class Item():
         # work out what colour and shape the item should be
         # this depends on what condition we're in, and what 
         # item_class we have assigned
-        print(item_class)
         self.colour = colours[item_class]
         self.shape = shapes[item_class]
-        self.points = points[item_class]
-        
+        self.points = points[item_class]        
         # randomise orientation
         self.orient = random.randint(0,360)
 
-        print("colour = " + str(self.colour))
-        print("points = " + str(self.points))
         # now create our polygon
         self.poly = visual.Polygon(
             win = exp_settings.win, 
