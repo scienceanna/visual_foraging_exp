@@ -136,6 +136,7 @@ class Trial():
 
         # calculate the number of items of each type
         n = list(map(int, np.round(self.n_items * proportions)))
+        print(n)
 
         item_class = np.repeat(np.arange(0, n_classes), n, axis = 0)
         # randomly shuffle labels here
@@ -376,6 +377,7 @@ class Trial():
             # check if we have reached the max trial time
             if clock.getTime() > self.max_time:
                 keep_going = False
+                self.score = 0
                 if self.condition["stopping_rule"].iloc[0] == "timer":
                     self.complete = True
                 else:
