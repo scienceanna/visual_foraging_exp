@@ -131,16 +131,20 @@ class Trial():
 
         proportions = cond["proportions"].iloc[0]
         proportions = np.array(proportions.split("-"), dtype = np.float32)
+        prop_missing = np.float32(cond["prop_missing"].iloc[0])
+
         # check proportions sum to 1
-        proportions = proportions / sum(proportions)
+        proportions = proportions / sum(proportions + prop_missing)
+        prop_missing = prop_missing / sum(proportions + prop_missing)
+        proportions = np.append(proportions, prop_missing)
 
         # calculate the number of items of each type
         n = list(map(int, np.round(self.n_items * proportions)))
-        print(n)
 
-        item_class = np.repeat(np.arange(0, n_classes), n, axis = 0)
+        item_class = np.repeat(np.arange(-1, n_classes), n, axis = 0)
         # randomly shuffle labels here
         item_class = np.random.permutation(item_class)
+        print(item_class)
 
         return(item_class)
 
@@ -173,12 +177,14 @@ class Trial():
         # for each item...
         for x, y, item_id, item_class in xy_pos:
 
-            # is the item a target?
-            is_targ = 1 if re.search("t", cty[item_class]) else 0
-            # now create a new item
-            items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)) 
+            if item_class > -1:
 
-            total_targets += is_targ
+                # is the item a target?
+                is_targ = 1 if re.search("t", cty[item_class]) else 0
+                # now create a new item
+                items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)) 
+
+                total_targets += is_targ
 
         return(items, total_targets)
 
@@ -238,8 +244,7 @@ class Trial():
         # now create the items that we need
         self.item_class = self.item_class_desigations(self.condition)
         self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
-
-        
+     
         # create all the items for this trial
         self.items, self.n_targ = self.create_items(self.condition, exp_settings, 
                                        self.points, self.colours, self.shapes, self.class_types)
@@ -341,7 +346,6 @@ class Trial():
         self.end_trial(exp_settings)
         
         return(self.final_found, self.final_score)
-
 
     def check_for_click(self, es, clock): 
 
