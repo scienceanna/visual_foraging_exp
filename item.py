@@ -24,17 +24,33 @@ class Item():
             grey = random.uniform(0,1)
             self.colour = [grey, grey, grey]
 
-        # now create our polygon
-        self.poly = visual.Polygon(
-            win = exp_settings.win, 
-            units = 'pix', 
-            edges = self.shape, 
-            lineColor = None, 
-            fillColor = self.colour, 
-            radius = 25, 
-            ori = self.orient,
-            pos = [self.x, self.y],
-            autoDraw = False)
+          # now create our polygon(s)
+        if self.shape == "T":
+
+            self.poly = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (10, 50),
+                lineColor = None, 
+                fillColor = self.colour, 
+                ori = self.orient,
+                pos = [self.x, self.y],
+                autoDraw = False)
+
+
+        else: 
+            self.poly = visual.Polygon(
+                win = exp_settings.win, 
+                units = 'pix', 
+                edges = self.shape, 
+                lineColor = None, 
+                fillColor = self.colour, 
+                radius = 25, 
+                ori = self.orient,
+                pos = [self.x, self.y],
+                autoDraw = False)
+            
+
 
     def update_location(self, x, y):
 

@@ -236,6 +236,11 @@ class Trial():
         self.item_class = self.item_class_desigations(self.condition)
         self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
 
+        
+        # work out how many targets we have
+        self.n_targ = sum(self.item_class)
+
+
         # create all the items for this trial
         self.items = self.create_items(self.condition, exp_settings, 
                                        self.points, self.colours, self.shapes, self.class_types)
