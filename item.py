@@ -48,7 +48,7 @@ class Item():
                 size = (50, 10),
                 lineColor = None, 
                 fillColor = self.colour,                
-                pos = [self.x, self.y],
+                pos = [self.x, self.y-25],
                 autoDraw = False)
 
         else: 
