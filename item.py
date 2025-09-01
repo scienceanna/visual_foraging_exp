@@ -25,7 +25,9 @@ class Item():
             self.colour = [grey, grey, grey]
 
           # now create our polygon(s)
-        if self.shape == "T":
+
+          # if shape is a T or L :
+        if self.shape  in ["T", "L"]:
 
             self.poly = visual.Rect(
                 win = exp_settings.win, 

@@ -157,7 +157,7 @@ class Trial():
         colours = colours.split("-")
 
         shapes = cond["shapes"].iloc[0]
-        shapes = list(map(int, shapes.split("-")))
+        shapes = shapes.split("-")
 
         class_type = cond["class_type"].iloc[0]
         class_type = np.array(class_type.split("-"), dtype = object)
