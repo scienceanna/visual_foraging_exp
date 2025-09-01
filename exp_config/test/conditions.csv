@@ -3,7 +3,7 @@ label,test2
 n_row,9
 n_col,9
 placement_rule,cardinal
-stopping_rule,points
+stopping_rule,inexhaustive
 point_threshold,2
 max_time,10
 distracter_click,terminate

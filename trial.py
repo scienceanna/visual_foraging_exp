@@ -353,12 +353,21 @@ class Trial():
                     keep_going = False
                     self.complete = True
 
-            # if we're doing exhaustive foraging, check
+            # if we're doing inexhaustive foraging, ...
+            if self.condition["stopping_rule"].iloc[0] == "inexhaustive":
+                # check for user response
+                if key == 'space':
+                    print("user terminated trial")
+                    keep_going = False
+                    self.complete = True
+
+            # if we're doing exhaustive foraging, check if we are finished
             if self.condition["stopping_rule"].iloc[0] == "exhaustive":
                 if (self.n_found == self.n_targ):
                     # print("gotta collect them all!")
                     keep_going = False
                     self.complete = True
+
 
             exp_settings.win.flip()
 
@@ -387,7 +396,6 @@ class Trial():
 
                     # we clicked on a target. Yay!
                     self.update_score(self.condition, ii, es)
-
                         
                 else: 
                         # we clicked on a distractor. Boo!

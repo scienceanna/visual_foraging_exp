@@ -3,7 +3,7 @@ label,freechoice,timeout
 n_row,8,8
 n_col,8,8
 placement_rule,cardinal,cardinal
-stopping_rule,timer,exhaustive
+stopping_rule,inexhaustive,inexhaustive
 point_threshold,10,10
 max_time,10,10
 distracter_click,as_target,as_target
