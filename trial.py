@@ -280,7 +280,7 @@ class Trial():
             exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
 
         for ii in self.items:  
-            ii.poly.autoDraw = True
+            ii.update_autoDraw(True)
         
         # are we eyetracking?
         if exp_settings.track_eyes == "track":
@@ -362,12 +362,12 @@ class Trial():
         for ii in self.items:
 
             # was the mouse clicked?
-            if es.mouse.isPressedIn(ii.poly) and ii.poly.autoDraw == True:
+            if es.mouse.isPressedIn(ii.poly) and ii.display == True:
                 # get time
                 current_time = np.around(clock.getTime(), 2)
 
                 # whatever was clicked, remove it from the display
-                ii.poly.autoDraw = False
+                ii.update_autoDraw(False)
 
                 if ii.is_target:
 
@@ -448,7 +448,7 @@ class Trial():
         self.final_score = self.score
 
         for ii in self.items:
-            ii.poly.autoDraw = False
+            ii.update_autoDraw(False)
 
         if self.condition["display_line"].iloc[0] != "off":
            self.line.autoDraw = False

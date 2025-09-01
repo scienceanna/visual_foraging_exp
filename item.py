@@ -24,6 +24,8 @@ class Item():
             grey = random.uniform(0,1)
             self.colour = [grey, grey, grey]
 
+        self.display = False
+
         # now create our polygon(s)
 
         # if shape is a T or L :
@@ -61,7 +63,15 @@ class Item():
                 pos = [self.x, self.y],
                 autoDraw = False)
             
-
+    def update_autoDraw(self, ad):
+        # turn autoDraw on or off for the item
+        self.display = ad
+        
+        if isinstance(self.poly, list):
+            for p in self.poly:
+                p.autoDraw = ad
+        else:
+            self.poly.autoDraw = ad 
 
     def update_location(self, x, y):
 
