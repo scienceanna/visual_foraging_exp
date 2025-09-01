@@ -244,8 +244,6 @@ class Trial():
         self.items, self.n_targ = self.create_items(self.condition, exp_settings, 
                                        self.points, self.colours, self.shapes, self.class_types)
 
-        print(self.n_targ)
-
         # display background, if we have one
         if self.bkgrnd == "noise":
             self.img_stim = visual.ImageStim(
@@ -338,48 +336,8 @@ class Trial():
                 self.shutdown(exp_settings)
             
             # for each frame, check if an item has been clicked on
-            for ii in self.items:
-                if exp_settings.mouse.isPressedIn(ii.poly) and ii.poly.autoDraw == True:
-                    # get time
-                    current_time = np.around(clock.getTime(), 2)
+            keep_going = self.check_for_click(exp_settings, clock)
 
-                    # whatever was clicked, remove it from the display
-                    ii.poly.autoDraw = False
-
-                    if ii.is_target:
-
-                        # we clicked on a target. Yay!
-                        self.update_score(self.condition,ii,exp_settings)
-                        
-                    else: 
-                        # we clicked on a distractor. Boo!
-                        print("not a target")
-
-                        if self.condition["distracter_click"][0] == "terminate":  
-                            # end the trial, but do not recycle  
-                            print("terminate the trial")                       
-                            keep_going = False
-                            self.complete = True  
-                       
-                        elif self.condition["distracter_click"][0] == "recycle":
-                            # end the trial and then try it again
-                            keep_going = False
-                            self.complete = False   
-                            # set score back to 0 for the next attempt 
-                            self.score = 0 
-                            # set found back to 0 for the next attempt
-                            self.n_found = 0
-
-                        elif self.condition["distracter_click"][0] == "as_target":
-                            # in this case, treat distracters like a target
-                            # presumably it has some negative point value
-                            self.update_score(self.condition,ii,exp_settings)
-
-                    # add info to log
-                    # person, block, condition, trial, attempt, id, found, score, item_class, x, y, rt
-                    exp_settings.dataFile.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
-                      
-            
             # check if we have reached the max trial time
             if clock.getTime() > self.max_time:
                 keep_going = False
@@ -397,7 +355,6 @@ class Trial():
 
             # if we're doing exhaustive foraging, check
             if self.condition["stopping_rule"].iloc[0] == "exhaustive":
-                # print("we have " + str(self.n_found) + " pokemon out of " + str(self.n_targ))
                 if (self.n_found == self.n_targ):
                     # print("gotta collect them all!")
                     keep_going = False
@@ -408,6 +365,60 @@ class Trial():
         self.end_trial(exp_settings)
         
         return(self.final_found, self.final_score)
+
+
+    def check_for_click(self, es, clock): 
+
+        # init keep_going
+        keep_going = True
+
+        # for each item
+        for ii in self.items:
+
+            # was the mouse clicked?
+            if es.mouse.isPressedIn(ii.poly) and ii.poly.autoDraw == True:
+                # get time
+                current_time = np.around(clock.getTime(), 2)
+
+                # whatever was clicked, remove it from the display
+                ii.poly.autoDraw = False
+
+                if ii.is_target:
+
+                    # we clicked on a target. Yay!
+                    self.update_score(self.condition, ii, es)
+
+                        
+                else: 
+                        # we clicked on a distractor. Boo!
+                    print("not a target")
+
+                    # how should we respond to the distracter click?    
+                    if self.condition["distracter_click"][0] == "terminate":  
+                            # end the trial, but do not recycle  
+                        print("terminate the trial")                       
+                        keep_going = False
+                        self.complete = True  
+                       
+                    elif self.condition["distracter_click"][0] == "recycle":
+                        # end the trial and then try it again
+                        keep_going = False
+                        self.complete = False   
+                        # set score back to 0 for the next attempt 
+                        self.score = 0 
+                        # set found back to 0 for the next attempt
+                        self.n_found = 0
+
+                    elif self.condition["distracter_click"][0] == "as_target":
+                        # in this case, treat distracters like a target
+                        # presumably it has some negative point value
+                        self.update_score(self.condition, ii, es)
+
+                # add info to log
+                # person, block, condition, trial, attempt, id, found, score, item_class, x, y, rt
+                es.dataFile.write(str(es.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
+        
+        return keep_going  
 
     def end_trial(self, es):
         

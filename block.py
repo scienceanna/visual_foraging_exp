@@ -85,7 +85,6 @@ class Block():
             outro_text_2 = visual.TextStim(es.win, 'In this block, you scored ' + str(self.block_score) + ' points.', pos = (0,-150), units = 'pix', height = 50)
             outro_text_2.draw()
             
-
         es.win.flip()
         event.waitKeys(keyList=['space'])
         es.win.flip()
