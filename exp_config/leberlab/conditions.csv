@@ -3,9 +3,9 @@ label,freechoice,timeout
 n_row,8,8
 n_col,8,8
 placement_rule,cardinal,cardinal
-stopping_rule,exhaustive,exhaustive
+stopping_rule,timer,exhaustive
 point_threshold,10,10
-max_time,100,100
+max_time,10,10
 distracter_click,as_target,as_target
 display_line,off,off
 background,noise,noise
