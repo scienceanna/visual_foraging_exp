@@ -169,6 +169,7 @@ class Trial():
         x, y, item_id = zip(*self.grid)
         xy_pos = zip(x,y,item_id, self.item_class)
         
+        total_targets = 0
         # for each item...
         for x, y, item_id, item_class in xy_pos:
 
@@ -177,7 +178,9 @@ class Trial():
             # now create a new item
             items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)) 
 
-        return(items)
+            total_targets += is_targ
+
+        return(items, total_targets)
 
     def update_score(self, cond, selected_item, es):
         self.feedback_type = cond["display_feedback"].iloc[0]
@@ -237,13 +240,11 @@ class Trial():
         self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
 
         
-        # work out how many targets we have
-        self.n_targ = sum(self.item_class)
-
-
         # create all the items for this trial
-        self.items = self.create_items(self.condition, exp_settings, 
+        self.items, self.n_targ = self.create_items(self.condition, exp_settings, 
                                        self.points, self.colours, self.shapes, self.class_types)
+
+        print(self.n_targ)
 
         # display background, if we have one
         if self.bkgrnd == "noise":
