@@ -1,6 +1,6 @@
 attribute,block0,block1
 label,block0,block1
-conditions,timeout,freechoice
+conditions,exhaustive,freechoice
 n_trials_per_cond,2,2
 group,none,none
 intro_text,This is an exhaustive block., This is a freechoice block.

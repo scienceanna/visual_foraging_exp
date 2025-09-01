@@ -1,11 +1,11 @@
-attribute,freechoice,timeout
-label,freechoice,timeout
+attribute,freechoice,exhaustive
+label,freechoice,exhaustive
 n_row,8,8
 n_col,8,8
 placement_rule,cardinal,cardinal
-stopping_rule,inexhaustive,inexhaustive
+stopping_rule,inexhaustive,exhaustive
 point_threshold,10,10
-max_time,10,10
+max_time,20,20
 distracter_click,as_target,as_target
 display_line,off,off
 background,noise,noise
