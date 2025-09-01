@@ -144,7 +144,6 @@ class Trial():
         item_class = np.repeat(np.arange(-1, n_classes), n, axis = 0)
         # randomly shuffle labels here
         item_class = np.random.permutation(item_class)
-        print(item_class)
 
         return(item_class)
 
@@ -178,8 +177,6 @@ class Trial():
         # for each item...
 
         for x, y, item_id, item_class in xy_pos:
-
-            print(cty[item_class])
 
             if cty[item_class] != "m":
 
@@ -432,7 +429,6 @@ class Trial():
 
             if number_str:
                 self.radius = int(number_str)
-                #print(self.radius)  # Output: 150
 
             self.line = visual.Circle(exp_settings.win, 
                 radius = self.radius/100,
