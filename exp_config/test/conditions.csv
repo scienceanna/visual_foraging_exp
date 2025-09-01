@@ -8,11 +8,11 @@ point_threshold,2
 max_time,10
 distracter_click,terminate
 display_line,none
-background,none
+background,noise
 display_feedback,block_score
 n_item_class,2
 proportions,0.6-0.4
 class_type,t-d
-colours,Red-Green
+colours,randomGrey-randomGrey
 shapes,5-6
 points,1-0

@@ -19,13 +19,19 @@ class Item():
         # randomise orientation
         self.orient = random.randint(0,360)
 
+        # check if we are using a distribution of colours
+        if self.colour == "randomGrey":
+            grey = random.uniform(0,1)
+            self.colour = [grey, grey, grey]
+
         # now create our polygon
         self.poly = visual.Polygon(
             win = exp_settings.win, 
             units = 'pix', 
             edges = self.shape, 
             lineColor = None, 
-            fillColor = self.colour, radius = 25, 
+            fillColor = self.colour, 
+            radius = 25, 
             ori = self.orient,
             pos = [self.x, self.y],
             autoDraw = False)
