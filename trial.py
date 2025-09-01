@@ -158,6 +158,10 @@ class Trial():
 
         shapes = cond["shapes"].iloc[0]
         shapes = shapes.split("-")
+        # if shapes is a number, convert to int
+        for i in range(len(shapes)):
+            if shapes[i].isdigit():
+                shapes[i] = int(shapes[i])
 
         class_type = cond["class_type"].iloc[0]
         class_type = np.array(class_type.split("-"), dtype = object)
