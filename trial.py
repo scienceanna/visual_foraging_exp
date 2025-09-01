@@ -254,40 +254,7 @@ class Trial():
             self.img_stim.autoDraw = True
 
         # do we want a line?
-        if self.condition["display_line"].iloc[0] == "vert":
-            self.line = visual.Line(exp_settings.win, 
-                start =(0,-1), 
-                end =(0,1), 
-                units = 'height',
-                lineWidth = 5, lineColor = "white")
-            self.line.autoDraw = True
-
-        elif self.condition["display_line"].iloc[0] == "horz":
-            self.line = visual.Line(exp_settings.win, 
-                start =(-1,0), 
-                end =(1,0), 
-                units = 'height',
-                lineWidth = 5, lineColor = "white")
-            self.line.autoDraw = True
-
-        elif "circle" in self.condition["display_line"][0]:
-
-            # extract radius
-            number_str = ""
-
-            for char in self.condition["display_line"][0]:
-              if char.isdigit():
-                number_str += char
-
-            if number_str:
-                self.radius = int(number_str)
-                #print(self.radius)  # Output: 150
-
-            self.line = visual.Circle(exp_settings.win, 
-                radius = self.radius/100,
-                lineWidth = 5, lineColor = "white",
-                fillColor = "none");
-            self.line.autoDraw = True
+        self.draw_dividing_lines(exp_settings)
         
         # make sure items are not overlapping        
         #jiggle_ctr = 0
@@ -427,6 +394,43 @@ class Trial():
                 es.dataFile.write(str(es.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
         
         return keep_going  
+
+    def draw_dividing_lines(self, exp_settings):
+
+        if self.condition["display_line"].iloc[0] == "vert":
+            self.line = visual.Line(exp_settings.win, 
+                start =(0,-1), 
+                end =(0,1), 
+                units = 'height',
+                lineWidth = 5, lineColor = "white")
+            self.line.autoDraw = True
+
+        elif self.condition["display_line"].iloc[0] == "horz":
+            self.line = visual.Line(exp_settings.win, 
+                start =(-1,0), 
+                end =(1,0), 
+                units = 'height',
+                lineWidth = 5, lineColor = "white")
+            self.line.autoDraw = True
+
+        elif "circle" in self.condition["display_line"][0]:
+
+            # extract radius
+            number_str = ""
+
+            for char in self.condition["display_line"][0]:
+              if char.isdigit():
+                number_str += char
+
+            if number_str:
+                self.radius = int(number_str)
+                #print(self.radius)  # Output: 150
+
+            self.line = visual.Circle(exp_settings.win, 
+                radius = self.radius/100,
+                lineWidth = 5, lineColor = "white",
+                fillColor = "none");
+            self.line.autoDraw = True
 
     def end_trial(self, es):
         
