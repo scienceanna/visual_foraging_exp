@@ -42,13 +42,18 @@ class Item():
                 pos = [self.x, self.y],
                 autoDraw = False)
             
+            if self.shape == "L":
+                offset = 10
+            else: # T shape
+                offset = 0
+            
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (50, 10),
+                size = (30, 10),
                 lineColor = None, 
                 fillColor = self.colour,                
-                pos = [self.x, self.y-25],
+                pos = [self.x + offset, self.y-25],
                 autoDraw = False)
 
         else: 
