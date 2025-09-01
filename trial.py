@@ -241,12 +241,12 @@ class Trial():
 
         # display background, if we have one
         if self.bkgrnd == "noise":
-            img_stim = visual.ImageStim(
+            self.img_stim = visual.ImageStim(
                 win = exp_settings.win,
                 image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
                 size = (1, 1),  # Size in pixels
                 pos = (0, 0))
-            img_stim.autoDraw = True
+            self.img_stim.autoDraw = True
 
         # do we want a line?
         if self.condition["display_line"].iloc[0] == "vert":
@@ -412,6 +412,9 @@ class Trial():
 
         if self.condition["display_line"].iloc[0] != "off":
            self.line.autoDraw = False
+           
+        if self.bkgrnd == "noise":
+            self.img_stim.autoDraw = False   
         
         # If eyetracking, stop it
         if es.track_eyes == "track":
