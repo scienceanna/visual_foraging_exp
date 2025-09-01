@@ -66,12 +66,25 @@ class Item():
     def update_autoDraw(self, ad):
         # turn autoDraw on or off for the item
         self.display = ad
-        
+
         if isinstance(self.poly, list):
             for p in self.poly:
                 p.autoDraw = ad
         else:
             self.poly.autoDraw = ad 
+
+    def check_mouse_click(self, mouse):
+        # check if the mouse has clicked on this item
+        if isinstance(self.poly, list):
+            for p in self.poly:
+                if mouse.isPressedIn(p) and self.display == True:
+                    return True
+            return False
+        else:
+            if mouse.isPressedIn(self.poly) and self.display == True:
+                return True
+            else:
+                return False
 
     def update_location(self, x, y):
 

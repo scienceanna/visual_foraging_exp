@@ -362,7 +362,7 @@ class Trial():
         for ii in self.items:
 
             # was the mouse clicked?
-            if es.mouse.isPressedIn(ii.poly) and ii.display == True:
+            if ii.check_mouse_click(es.mouse) and ii.display == True:
                 # get time
                 current_time = np.around(clock.getTime(), 2)
 
