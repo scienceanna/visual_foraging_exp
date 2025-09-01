@@ -161,6 +161,7 @@ class Trial():
 
         class_type = cond["class_type"].iloc[0]
         class_type = np.array(class_type.split("-"), dtype = object)
+        class_type = np.append(class_type, "m")
 
         return points, colours, shapes, class_type 
 
@@ -175,9 +176,12 @@ class Trial():
         
         total_targets = 0
         # for each item...
+
         for x, y, item_id, item_class in xy_pos:
 
-            if item_class > -1:
+            print(cty[item_class])
+
+            if cty[item_class] != "m":
 
                 # is the item a target?
                 is_targ = 1 if re.search("t", cty[item_class]) else 0
