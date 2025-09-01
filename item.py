@@ -24,21 +24,30 @@ class Item():
             grey = random.uniform(0,1)
             self.colour = [grey, grey, grey]
 
-          # now create our polygon(s)
+        # now create our polygon(s)
 
-          # if shape is a T or L :
+        # if shape is a T or L :
         if self.shape  in ["T", "L"]:
 
-            self.poly = visual.Rect(
+            self.poly = [None, None]
+
+            self.poly[0] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
                 size = (10, 50),
                 lineColor = None, 
-                fillColor = self.colour, 
-                ori = self.orient,
+                fillColor = self.colour,                
                 pos = [self.x, self.y],
                 autoDraw = False)
-
+            
+            self.poly[1] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (50, 10),
+                lineColor = None, 
+                fillColor = self.colour,                
+                pos = [self.x, self.y],
+                autoDraw = False)
 
         else: 
             self.poly = visual.Polygon(
