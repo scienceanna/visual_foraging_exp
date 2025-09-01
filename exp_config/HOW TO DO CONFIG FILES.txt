@@ -36,7 +36,7 @@ label: label for the condition (what is used in the experiment, so make this as 
 n_row: number of rows in the item grid (total number of items will be n_row * n_col)
 n_col: number of columns in the item grid (total number of items will be n_row * n_col)
 placement_rule: how the items should be placed. Options - 'uniform' (i.e. uniform random placement), 'cardinal' (i.e. on a grid of cardinal directions), 'rotated' (i.e. on a rotated grid), 'clump' (i.e. in clumps, as determined by 1/f noise)
-stopping_rule: how a trial should be ended. Options - 'timer' (i.e. end the trial when we reach a maximum time, and don't repeat), 'points' (i.e. end trial when we reach a certain points threshold), 'exhaustive' (i.e. end trial when we have found all targets).
+stopping_rule: how a trial should be ended. Options - 'timer' (i.e. end the trial when we reach a maximum time, and don't repeat), 'points' (i.e. end trial when we reach a certain points threshold), 'exhaustive' (i.e. end trial when we have found all targets), 'inexhaustive' (i.e. end trial when participant presses the spacebar).
 point_threshold: what is the points threshold for this condition?
 max_time: what is the maximum amount of time that someone can spend on a trial? Note that this applies whatever stopping rule is applied - however, for stopping_rule options other than 'timer', reaching the maximum time will prompt a repeat of the trial.
 distracter_click: what should happen if someone clicks on a distractor. Options - 'terminate' (i.e. end the trial, and don't repeat), 'recycle' (i.e. end the trial and do repeat), 'as_target' (i.e. treat the same as a target).
