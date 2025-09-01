@@ -45,6 +45,7 @@ background: can currently be set to 'none' or 'noise'.
 display_feedback: should we display feedback? Options - 'off' (i.e. don't display feedback), 'trial_found' (i.e. display the total number of targets found in the trial, in top right), 'trial_score' (i.e. display total score of trial, in top right), 'block_found' (i.e. give the total number found at the end of the block), 'block_score' (i.e. give the total score at the end of the block)
 n_item_class: number of item classes
 proportions: what proportion of items in each class do you want on the screen? (use - without a space to separate the numbers e.g. 0.5-0.5)
+proportion_missing: what proportion of blank spaces do you want in the grid?
 class_type: should each class be considered a target (t) or a distractor (d)? (use - without a space to separate e.g. t-d)
 colours: you can use web/x11 colour names, or 'randomGrey' will give each item in this class a random grey level (use - without a space to separate e.g. 'red-randomGrey'
 shapes: number of vertices for each item class (use - without a space to separate e.g. 5-6)

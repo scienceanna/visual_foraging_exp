@@ -134,9 +134,10 @@ class Trial():
         prop_missing = np.float32(cond["prop_missing"].iloc[0])
 
         # check proportions sum to 1
-        proportions = proportions / sum(proportions + prop_missing)
-        prop_missing = prop_missing / sum(proportions + prop_missing)
-        proportions = np.append(proportions, prop_missing)
+        total_for_targ = math.fsum(proportions)
+        proportions = proportions / (total_for_targ + prop_missing)
+        prop_missing = prop_missing / (total_for_targ + prop_missing)
+        proportions = np.append(prop_missing, proportions)
 
         # calculate the number of items of each type
         n = list(map(int, np.round(self.n_items * proportions)))
