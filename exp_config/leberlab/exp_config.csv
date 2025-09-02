@@ -9,4 +9,4 @@ global_practice,none
 intro_expt,Welcome to the experiment.
 outro_expt,Thank you for taking part!
 track_eyes,FALSE
-screenshot,FALSE
+screenshot,screenshot

@@ -15,11 +15,16 @@ class Item():
         # item_class we have assigned
         self.colour = colours[item_class]
         self.shape = shapes[item_class]
-        self.points = points[item_class]        
+        self.points = points[item_class]
+        
         # randomise orientation
-        self.orient = random.randint(0,360)
-
-
+        if self.shape  in ["T", "L"]:
+            orient_options = ['0', '90', '180', '270'] 
+            self.orient = random.choice(orient_options)
+        else:
+            self.orient = random.randint(0,360)
+        
+    
         # check if we are using a distribution of colours
         if self.colour == "randomGrey":
             grey = random.uniform(0,1)
@@ -41,22 +46,24 @@ class Item():
                 lineColor = None, 
                 fillColor = self.colour,                
                 pos = [self.x, self.y],
+                ori = self.orient,
                 autoDraw = False)
+                
             if self.shape == "T":
-            
                 offset = 0
-            elif self.shape == "L":
-                offset = offset * 20
+            else:
+                offset = offset * 22.5
 
             print(offset)
             
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (30, 10),
+                size = (50, 10),
                 lineColor = None, 
                 fillColor = self.colour,                
                 pos = [self.x + offset, self.y-25],
+                ori = self.orient,
                 autoDraw = False)
 
         else: 
