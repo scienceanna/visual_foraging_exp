@@ -254,13 +254,16 @@ class Trial():
         # create all the items for this trial
         self.items, self.n_targ = self.create_items(self.condition, exp_settings, 
                                        self.points, self.colours, self.shapes, self.class_types)
+                                       
+        print(exp_settings.win)
 
         # display background, if we have one
         if self.bkgrnd == "noise":
             self.img_stim = visual.ImageStim(
                 win = exp_settings.win,
                 image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
-                size = (1, 1),  # Size in pixels
+                size = (exp_settings.scrn_width,exp_settings.scrn_height),  # Size in pixels
+                units = 'pix',
                 pos = (0, 0))
             self.img_stim.autoDraw = True
 
