@@ -2,7 +2,7 @@ import random
 from psychopy import visual
 
 class Item(): 
-    def __init__(self, x, y, item_id, item_class, is_target, cond, exp_settings, colours, shapes, points):
+    def __init__(self, x, y, item_id, item_class, is_target, cond, exp_settings, colours, shapes, points, offset):
 
         self.x = x
         self.y = y
@@ -18,6 +18,7 @@ class Item():
         self.points = points[item_class]        
         # randomise orientation
         self.orient = random.randint(0,360)
+
 
         # check if we are using a distribution of colours
         if self.colour == "randomGrey":
@@ -41,11 +42,13 @@ class Item():
                 fillColor = self.colour,                
                 pos = [self.x, self.y],
                 autoDraw = False)
+            if self.shape == "T":
             
-            if self.shape == "L":
-                offset = 10
-            else: # T shape
                 offset = 0
+            elif self.shape == "L":
+                offset = offset * 20
+
+            print(offset)
             
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 

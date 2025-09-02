@@ -26,6 +26,7 @@ class Trial():
         self.score = 0
         # how many targets have been clicked on so far (this trial)?
         self.n_found = 0
+
         # set up feedback
         self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width - exp_settings.width_border)/2 - 50, int(exp_settings.scrn_height - exp_settings.height_border)/2 - 50), units = 'pix')
 
@@ -180,17 +181,23 @@ class Trial():
         
         total_targets = 0
         # for each item...
-
         for x, y, item_id, item_class in xy_pos:
 
             if cty[item_class] != "m":
 
                 # is the item a target?
                 is_targ = 1 if re.search("t", cty[item_class]) else 0
-                # now create a new item
-                items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts)) 
-
                 total_targets += is_targ
+
+                # now create a new item
+
+                if shp[item_class] == "L":
+                    offset = self.L_offsets[total_targets - 1]
+                else:
+                    offset = 0  
+
+                items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts, offset)) 
+
 
         return(items, total_targets)
 
@@ -250,10 +257,24 @@ class Trial():
         # now create the items that we need
         self.item_class = self.item_class_desigations(self.condition)
         self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
-     
+
+        # count how many self.item_class == 1
+        self.n_targ = np.sum(self.item_class == 0)
+
+        # does any shapes = "L" or "T"? If so, we need to create the offsets
+        if ("L" in self.shapes):
+            # generate n_targ equally spaced values from 0 to 1
+            self.L_offsets = np.linspace(0, 1, self.n_targ+1)[:-1]
+            np.random.shuffle(self.L_offsets)
+        else:
+            self.L_offsets = []
+
         # create all the items for this trial
         self.items, self.n_targ = self.create_items(self.condition, exp_settings, 
                                        self.points, self.colours, self.shapes, self.class_types)
+        
+        
+
 
         # display background, if we have one
         if self.bkgrnd == "noise":

@@ -6,7 +6,6 @@ import random
 import os.path
 from block import *
 
-
 class Experiment():
     def __init__(self, exp_name):
         
