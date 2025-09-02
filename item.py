@@ -66,10 +66,11 @@ class Item():
                 edges = self.shape, 
                 lineColor = None, 
                 fillColor = self.colour, 
-                radius = 25, 
+                radius = exp_settings.win.size[1]/50,
                 ori = self.orient,
                 pos = [self.x, self.y],
                 autoDraw = False)
+                
             
     def update_autoDraw(self, ad):
         # turn autoDraw on or off for the item
