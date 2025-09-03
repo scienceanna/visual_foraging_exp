@@ -26,9 +26,17 @@ class Trial():
         self.score = 0
         # how many targets have been clicked on so far (this trial)?
         self.n_found = 0
+        
+        # set up background
+        self.img_stim = visual.ImageStim(
+            win = exp_settings.win,
+            image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
+            size = (exp_settings.scrn_width,exp_settings.scrn_height),  # Size in pixels
+            units = 'pix',
+            pos = (0, 0))
 
         # set up feedback
-        self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width - exp_settings.width_border)/2 - 50, int(exp_settings.scrn_height - exp_settings.height_border)/2 - 50), units = 'pix')
+        self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width - exp_settings.width_border)/2 - 75, int(exp_settings.scrn_height - exp_settings.height_border)/2 - 75), units = 'pix', color = "red")
 
         # end trial rules
         self.max_time = int(cond["max_time"].iloc[0])
@@ -275,13 +283,7 @@ class Trial():
 
         # display background, if we have one
         if self.bkgrnd == "noise":
-            self.img_stim = visual.ImageStim(
-                win = exp_settings.win,
-                image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
-                size = (exp_settings.scrn_width,exp_settings.scrn_height),  # Size in pixels
-                units = 'pix',
-                pos = (0, 0))
-            self.img_stim.autoDraw = True
+            self.img_stim.draw()
 
         # do we want a line?
         self.draw_dividing_lines(exp_settings)
@@ -332,6 +334,10 @@ class Trial():
                 ... # No response
             elif key == 'escape':
                 self.shutdown(exp_settings)
+            
+            # display background, if we have one
+            if self.bkgrnd == "noise":
+                self.img_stim.draw()
             
             # for each frame, check if an item has been clicked on
             keep_going = self.check_for_click(exp_settings, clock)
