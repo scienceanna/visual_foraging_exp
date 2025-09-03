@@ -8,7 +8,8 @@ class Item():
         self.y = y
         self.id = item_id
         self.item_class = item_class
-        self.is_target = is_target 
+        self.is_target = is_target
+        self.offset = offset
 
         # work out what colour and shape the item should be
         # this depends on what condition we're in, and what 
@@ -59,7 +60,6 @@ class Item():
                 
     def create_T_or_L(self, x, y, orient, exp_settings, offset):
 
-        print(orient)
         self.poly = [None, None]
 
         # draw stem
@@ -77,7 +77,7 @@ class Item():
             self.poly[0] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (50, 10),
+                size = (10, 50),
                 lineColor = None, 
                 fillColor = self.colour,                
                 pos = [self.x, self.y],
@@ -89,19 +89,19 @@ class Item():
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (30, 10),
+                size = (50, 10),
                 lineColor = None, 
                 fillColor = self.colour,                
-                pos = [self.x + 2, self.y + offset],
+                pos = [self.x + 25, self.y + offset],
                 ori = self.orient,
                 autoDraw = False)
         elif orient == "180":
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (30, 10),
+                size = (50, 10),
                 lineColor = None, 
-                fillColor = self.colour,                
+                fillColor = self.colour,               
                 pos = [self.x - 25, self.y - offset],
                 ori = self.orient,
                 autoDraw = False)
@@ -109,9 +109,9 @@ class Item():
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (10, 30),
+                size = (50, 10),
                 lineColor = None, 
-                fillColor = self.colour,                
+                fillColor = self.colour,               
                 pos = [self.x + offset, self.y + 25],
                 ori = self.orient,
                 autoDraw = False)
@@ -119,9 +119,9 @@ class Item():
             self.poly[1] = visual.Rect(
                 win = exp_settings.win, 
                 units = 'pix', 
-                size = (10, 30),
+                size = (50, 10),
                 lineColor = None, 
-                fillColor = self.colour,                
+                fillColor = self.colour,               
                 pos = [self.x - offset, self.y - 25],
                 ori = self.orient,
                 autoDraw = False)         

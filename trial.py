@@ -198,7 +198,6 @@ class Trial():
 
                 items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts, offset)) 
 
-
         return(items, total_targets)
 
     def update_score(self, cond, selected_item, es):
@@ -258,13 +257,13 @@ class Trial():
         self.item_class = self.item_class_desigations(self.condition)
         self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
 
-        # count how many self.item_class == 1
+        # count how many self.item_class == 0
         self.n_targ = np.sum(self.item_class == 0)
 
         # does any shapes = "L" or "T"? If so, we need to create the offsets
         if ("L" in self.shapes):
             # generate n_targ equally spaced values from 0 to 1
-            self.L_offsets = np.linspace(0, 1, self.n_targ+1)[:-1]
+            self.L_offsets = np.linspace(0.1, 0.9, self.n_targ)
             np.random.shuffle(self.L_offsets)
         else:
             self.L_offsets = []
@@ -297,7 +296,8 @@ class Trial():
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
-            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
+            
+            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.class_types[ii.item_class]) + "," + str(ii.x) + "," + str(ii.y) + "," + str(ii.offset) + '\n')
 
         for ii in self.items:  
             ii.update_autoDraw(True)
@@ -421,7 +421,7 @@ class Trial():
 
                 # add info to log
                 # person, block, condition, trial, attempt, id, found, score, item_class, x, y, rt
-                es.dataFile.write(str(es.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
+                es.dataFile.write(str(es.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(self.class_types[ii.item_class]) + "," + str(ii.x) + "," + str(ii.y) + "," + str(ii.offset) + "," + str(current_time) + '\n')
         
         return keep_going  
 
