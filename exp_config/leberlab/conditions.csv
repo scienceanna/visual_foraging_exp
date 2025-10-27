@@ -11,9 +11,9 @@ display_line,off,off
 background,noise,noise
 display_feedback,trial_found,trial_found
 n_item_class,2,2
-proportions,10-44,10-44
+proportions,Oct-44,Oct-44
 prop_missing,10,10
 class_type,t-d,t-d
-colours,red-randomGrey,red-randomGrey
+colours,randomGrey-randomGrey,randomGrey-randomGrey
 shapes,L-T,L-T
 points,1-0,1-0

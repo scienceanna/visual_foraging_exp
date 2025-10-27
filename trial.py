@@ -284,7 +284,12 @@ class Trial():
         # display background, if we have one
         if self.bkgrnd == "noise":
             self.img_stim.draw()
-
+            exp_settings.win.flip()
+            self.imageNameBg = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + "_background"
+            exp_settings.win.getMovieFrame()
+            exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageNameBg + '.png'))
+            self.img_stim.draw()
+        
         # do we want a line?
         self.draw_dividing_lines(exp_settings)
         
@@ -312,7 +317,7 @@ class Trial():
             exp_settings.el_tracker.sendMessage('TRIALID %d' % self.n)
             exp_settings.el_tracker.sendMessage('ATTEMPT %d' % self.attempts)
             exp_settings.el_tracker.startRecording(1, 1, 1, 1)
-
+            
         # update the window
         exp_settings.win.flip()
         
