@@ -44,7 +44,7 @@ class Item():
                 offset = 0
             else:
                 offset = offset * (scale_size/2 - 2.5)
-                print(offset)
+                #print(offset)
 
             self.poly = self.create_T_or_L(self.x, self.y, self.orient, exp_settings, offset, scale_size)
 

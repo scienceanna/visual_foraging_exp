@@ -20,7 +20,7 @@ class Trial():
         # counter for how many attempts have been made for this trial
         self.attempts = 0
         # a flag to track if the trial needs repeated
-        self.complete = False   
+        self.complete = False  
 
         # how many points have we scored this trial so far? 
         self.score = 0
@@ -223,6 +223,13 @@ class Trial():
         if self.feedback_type == "trial_found": 
             self.feedback.text = self.n_found
             self.feedback.autoDraw = True
+            
+        if self.feedback_type == "block_found_in_trial":
+            if (selected_item.is_target == True):
+                self.current_score = self.current_score + 1
+                
+            self.feedback.text = self.current_score
+            self.feedback.autoDraw = True
 
     def get_keypress(self):
         keys = event.getKeys()
@@ -248,7 +255,7 @@ class Trial():
         es.win.close()
         core.quit()
 
-    def run(self, exp_settings):
+    def run(self, exp_settings, block_score, block_complete):
 
         #############################################################
         # This is the important method where we actually run a trial!
@@ -370,7 +377,21 @@ class Trial():
                     print("user terminated trial")
                     keep_going = False
                     self.complete = True
-
+            
+            # if we are doing inexhaustive foraging where we want a certain number of points in a block
+            if self.condition["stopping_rule"].iloc[0] == "inexhaustive_points":
+                self.current_score = int(block_score + self.n_found)
+                # check whether we have reached the total number of points needed
+                if self.current_score >= int(self.condition["point_threshold"].iloc[0]):
+                    keep_going = False
+                    block_complete = True
+                    self.complete = True
+                # check for user response
+                if key == 'space':
+                    print("user terminated trial")
+                    keep_going = False
+                    self.complete = True
+                
             # if we're doing exhaustive foraging, check if we are finished
             if self.condition["stopping_rule"].iloc[0] == "exhaustive":
                 if (self.n_found == self.n_targ):
@@ -383,7 +404,7 @@ class Trial():
 
         self.end_trial(exp_settings)
         
-        return(self.final_found, self.final_score)
+        return(self.final_found, self.final_score, block_complete)
 
     def check_for_click(self, es, clock): 
 

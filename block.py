@@ -10,6 +10,8 @@ class Block():
         self.block_found = 0
         self.block_score = 0
         self.practice = practice
+        # a flag for block completion
+        self.block_complete = False
         
         n_trials_per_cond = int(n_trials_per_cond)
 
@@ -46,20 +48,25 @@ class Block():
         self.display_intro_block(es)
 
         for trial in self.trials:
-
+            
+            if self.block_complete == True:
+                trial.complete = True
+            
             while trial.complete == False: 
                 # fixation cross
                 es.fixation.draw()
                 es.win.flip()
                 # Press before beginning (or do we want a specific wait time?)
                 event.waitKeys(keyList=['space'])
-                final_found, final_score = trial.run(es)
-                self.block_found = self.block_found + final_found
+                final_found, final_score, self.block_complete = trial.run(es, self.block_score, self.block_complete)
+                self.block_found = int(self.block_found + final_found)
                 self.block_score = self.block_score + final_score
 
                 if trial.attempts > 5:
                     # this person is a muppet, let's move on
                     trial.complete = True
+                
+
 
         self.display_outro_block(es)
 
