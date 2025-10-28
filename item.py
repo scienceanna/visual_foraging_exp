@@ -28,7 +28,7 @@ class Item():
     
         # check if we are using a distribution of colours
         if self.colour == "randomGrey":
-            grey = random.uniform(0,1)
+            grey = random.uniform(0.15,0.85)
             self.colour = [grey, grey, grey]
 
         self.display = False
@@ -43,7 +43,8 @@ class Item():
             if self.shape == "T":
                 offset = 0
             else:
-                offset = offset * (scale_size/2 -2.5)
+                offset = offset * (scale_size/2 - 2.5)
+                print(offset)
 
             self.poly = self.create_T_or_L(self.x, self.y, self.orient, exp_settings, offset, scale_size)
 

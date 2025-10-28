@@ -5,13 +5,13 @@ n_col,8,8
 placement_rule,cardinal,cardinal
 stopping_rule,inexhaustive,exhaustive
 point_threshold,10,10
-max_time,20,20
+max_time,200,200
 distracter_click,as_target,as_target
 display_line,off,off
 background,noise,noise
 display_feedback,trial_found,trial_found
 n_item_class,2,2
-proportions,Oct-44,Oct-44
+proportions,10-44,10-44
 prop_missing,10,10
 class_type,t-d,t-d
 colours,randomGrey-randomGrey,randomGrey-randomGrey

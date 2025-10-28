@@ -30,9 +30,10 @@ class Trial():
         # set up background
         self.img_stim = visual.ImageStim(
             win = exp_settings.win,
-            image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
+            image =  gen_1overf_noise(4, n = 512),  # Pass matrix directly
             size = (exp_settings.scrn_width,exp_settings.scrn_height),  # Size in pixels
             units = 'pix',
+            colorSpace = 'rgb1',
             pos = (0, 0))
 
         # set up feedback
@@ -271,7 +272,7 @@ class Trial():
         # does any shapes = "L" or "T"? If so, we need to create the offsets
         if ("L" in self.shapes):
             # generate n_targ equally spaced values from 0 to 1
-            self.L_offsets = np.linspace(0.1, 0.9, self.n_targ)
+            self.L_offsets = np.linspace(0.3, 0.9, self.n_targ)
             np.random.shuffle(self.L_offsets)
         else:
             self.L_offsets = []
@@ -373,7 +374,7 @@ class Trial():
             # if we're doing exhaustive foraging, check if we are finished
             if self.condition["stopping_rule"].iloc[0] == "exhaustive":
                 if (self.n_found == self.n_targ):
-                    # print("gotta collect them all!")
+                    #print("gotta collect them all!")
                     keep_going = False
                     self.complete = True
 
