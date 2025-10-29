@@ -6,7 +6,6 @@ import random
 import os.path
 from block import *
 
-
 class Experiment():
     def __init__(self, exp_name):
         
@@ -37,12 +36,12 @@ class Experiment():
         # this tracks the behaviour. I.e., the items that were selected
         # this corresponds to d$found in the FoMo import code
         self.dataFile = open(self.data_folder + self.fileName+'_found.csv', 'w') 
-        self.dataFile.write('person,block,condition,trial,attempt,id,found,score,item_class,x,y,rt\n') 
+        self.dataFile.write('person,block,condition,trial,attempt,id,found,score,item_class,x,y,offset,rt\n') 
         
         # this stores information on the stimulus (including items that were never selected)
         # this corresponds to d$stim in the FoMo import code
         self.dataFileStim = open(self.data_folder + self.fileName+'_stim.csv', 'w')
-        self.dataFileStim.write('person,block,condition,trial,attempt,id,item_class,x,y\n') # this is d$stim
+        self.dataFileStim.write('person,block,condition,trial,attempt,id,item_class,x,y,offset\n') # this is d$stim
         
         # import exp config - this is saved in a csv
         self.import_exp_config()
