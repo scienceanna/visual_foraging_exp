@@ -59,7 +59,7 @@ class Block():
                 # Press before beginning (or do we want a specific wait time?)
                 event.waitKeys(keyList=['space'])
                 final_found, final_score, self.block_complete = trial.run(es, self.block_score, self.block_complete)
-                self.block_found = int(self.block_found + final_found)
+                self.block_found = self.block_found + final_found
                 self.block_score = self.block_score + final_score
 
                 if trial.attempts > 5:

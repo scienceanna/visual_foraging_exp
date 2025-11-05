@@ -420,15 +420,21 @@ class Trial():
                 current_time = np.around(clock.getTime(), 2)
 
                 # whatever was clicked, remove it from the display
-                ii.update_autoDraw(False)
+                if self.condition["distracter_click"][0] != "nondisappear":
+                    ii.update_autoDraw(False)
 
                 if ii.is_target:
 
                     # we clicked on a target. Yay!
                     self.update_score(self.condition, ii, es)
+                    
+                    # make targets disappear if we are in the nondisappearing distractor condition
+                    if self.condition["distracter_click"][0] == "nondisappear":
+                        ii.update_autoDraw(False)
                         
                 else: 
-                        # we clicked on a distractor. Boo!
+                    
+                    # we clicked on a distractor. Boo!
                     print("not a target")
 
                     # how should we respond to the distracter click?    
