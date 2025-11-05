@@ -4,8 +4,8 @@ scrn_height,1500
 width_border,500
 height_border,350
 jiggle,0
-block_style,randomised
-global_practice,none
+block_style,in_order
+global_practice,blockp
 intro_expt,Welcome to the experiment.
 outro_expt,Thank you for taking part!
 track_eyes,FALSE
