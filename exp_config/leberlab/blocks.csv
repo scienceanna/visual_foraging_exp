@@ -1,8 +1,8 @@
-attribute,blockp,block1,block2,block3,block4,block5,block6
-label,blockp,block1,block2,block3,block4,block5,block6
-conditions,practice,freechoice,exhaustive,freechoice,exhaustive,freechoice,exhaustive
-n_trials_per_cond,2,40,12,40,12,40,12
-group,none,none,none,none,none,none,none
-intro_text,This is a practice block., This is a freechoice block.,This is an exhaustive block., This is a freechoice block.,This is an exhaustive block., This is a freechoice block.,This is an exhaustive block.
-outro_text,This block is complete. Take a break!, This block is complete. Take a break!,This block is complete. Take a break!, This block is complete. Take a break!,This block is complete. Take a break!, This block is complete. Take a break!,This block is complete. Take a break!
-practice,none,none,none,none,none,none,none
+attribute,blockp,blockp2,block1,block2,block3,block4,block5,block6
+label,blockp,blockp2,block1,block2,block3,block4,block5,block6
+conditions,practice,practice2,freechoice,exhaustive,freechoice,exhaustive,freechoice,exhaustive
+n_trials_per_cond,2,5,40,12,40,12,40,12
+group,none,none,none,none,none,none,none,none
+intro_text,This is a practice block.,This is a practice block (for free choice)., This is a freechoice block.,This is an exhaustive block., This is a freechoice block.,This is an exhaustive block., This is a freechoice block.,This is an exhaustive block.
+outro_text,This block is complete. Take a break!,This block is complete. Take a break!, This block is complete. Take a break!,This block is complete. Take a break!, This block is complete. Take a break!,This block is complete. Take a break!, This block is complete. Take a break!,This block is complete. Take a break!
+practice,none,none,none,none,none,none,none,none
