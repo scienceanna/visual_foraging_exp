@@ -20,15 +20,24 @@ class Trial():
         # counter for how many attempts have been made for this trial
         self.attempts = 0
         # a flag to track if the trial needs repeated
-        self.complete = False   
+        self.complete = False  
 
         # how many points have we scored this trial so far? 
         self.score = 0
         # how many targets have been clicked on so far (this trial)?
         self.n_found = 0
+        
+        # set up background
+        self.img_stim = visual.ImageStim(
+            win = exp_settings.win,
+            image =  gen_1overf_noise(4, n = 512),  # Pass matrix directly
+            size = (exp_settings.scrn_width,exp_settings.scrn_height),  # Size in pixels
+            units = 'pix',
+            colorSpace = 'rgb1',
+            pos = (0, 0))
 
         # set up feedback
-        self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width - exp_settings.width_border)/2 - 50, int(exp_settings.scrn_height - exp_settings.height_border)/2 - 50), units = 'pix')
+        self.feedback = visual.TextStim(exp_settings.win, text = self.score, pos = (int(exp_settings.scrn_width - exp_settings.width_border)/2 - 75, int(exp_settings.scrn_height - exp_settings.height_border)/2 - 75), units = 'pix', color = "red")
 
         # end trial rules
         self.max_time = int(cond["max_time"].iloc[0])
@@ -198,7 +207,6 @@ class Trial():
 
                 items.append(Item(x, y, item_id, item_class, is_targ, cond, es, col, shp, pts, offset)) 
 
-
         return(items, total_targets)
 
     def update_score(self, cond, selected_item, es):
@@ -214,6 +222,13 @@ class Trial():
             
         if self.feedback_type == "trial_found": 
             self.feedback.text = self.n_found
+            self.feedback.autoDraw = True
+            
+        if self.feedback_type == "block_found_in_trial":
+            if (selected_item.is_target == True):
+                self.current_score = self.current_score + 1
+                
+            self.feedback.text = self.current_score
             self.feedback.autoDraw = True
 
     def get_keypress(self):
@@ -240,7 +255,7 @@ class Trial():
         es.win.close()
         core.quit()
 
-    def run(self, exp_settings):
+    def run(self, exp_settings, block_score, block_complete):
 
         #############################################################
         # This is the important method where we actually run a trial!
@@ -258,13 +273,13 @@ class Trial():
         self.item_class = self.item_class_desigations(self.condition)
         self.points, self.colours, self.shapes, self.class_types = self.get_item_properties(self.condition)
 
-        # count how many self.item_class == 1
+        # count how many self.item_class == 0
         self.n_targ = np.sum(self.item_class == 0)
 
         # does any shapes = "L" or "T"? If so, we need to create the offsets
         if ("L" in self.shapes):
             # generate n_targ equally spaced values from 0 to 1
-            self.L_offsets = np.linspace(0, 1, self.n_targ+1)[:-1]
+            self.L_offsets = np.linspace(0.3, 0.9, self.n_targ)
             np.random.shuffle(self.L_offsets)
         else:
             self.L_offsets = []
@@ -276,14 +291,13 @@ class Trial():
 
         # display background, if we have one
         if self.bkgrnd == "noise":
-            self.img_stim = visual.ImageStim(
-                win = exp_settings.win,
-                image =  gen_1overf_noise(3, n = 512),  # Pass matrix directly
-                size = (exp_settings.scrn_width,exp_settings.scrn_height),  # Size in pixels
-                units = 'pix',
-                pos = (0, 0))
-            self.img_stim.autoDraw = True
-
+            self.img_stim.draw()
+            exp_settings.win.flip()
+            self.imageNameBg = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + "_background"
+            exp_settings.win.getMovieFrame()
+            exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageNameBg + '.png'))
+            self.img_stim.draw()
+        
         # do we want a line?
         self.draw_dividing_lines(exp_settings)
         
@@ -297,7 +311,8 @@ class Trial():
         
         # now we want to save the item info (after everything is in correct place)
         for ii in self.items:
-            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + '\n')
+            
+            exp_settings.dataFileStim.write(str(exp_settings.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.class_types[ii.item_class]) + "," + str(ii.x) + "," + str(ii.y) + "," + str(ii.offset) + '\n')
 
         for ii in self.items:  
             ii.update_autoDraw(True)
@@ -310,7 +325,7 @@ class Trial():
             exp_settings.el_tracker.sendMessage('TRIALID %d' % self.n)
             exp_settings.el_tracker.sendMessage('ATTEMPT %d' % self.attempts)
             exp_settings.el_tracker.startRecording(1, 1, 1, 1)
-
+            
         # update the window
         exp_settings.win.flip()
         
@@ -332,6 +347,10 @@ class Trial():
                 ... # No response
             elif key == 'escape':
                 self.shutdown(exp_settings)
+            
+            # display background, if we have one
+            if self.bkgrnd == "noise":
+                self.img_stim.draw()
             
             # for each frame, check if an item has been clicked on
             keep_going = self.check_for_click(exp_settings, clock)
@@ -358,11 +377,25 @@ class Trial():
                     print("user terminated trial")
                     keep_going = False
                     self.complete = True
-
+            
+            # if we are doing inexhaustive foraging where we want a certain number of points in a block
+            if self.condition["stopping_rule"].iloc[0] == "inexhaustive_points":
+                self.current_score = int(block_score + self.n_found)
+                # check whether we have reached the total number of points needed
+                if self.current_score >= int(self.condition["point_threshold"].iloc[0]):
+                    keep_going = False
+                    block_complete = True
+                    self.complete = True
+                # check for user response
+                if key == 'space':
+                    print("user terminated trial")
+                    keep_going = False
+                    self.complete = True
+                
             # if we're doing exhaustive foraging, check if we are finished
             if self.condition["stopping_rule"].iloc[0] == "exhaustive":
                 if (self.n_found == self.n_targ):
-                    # print("gotta collect them all!")
+                    #print("gotta collect them all!")
                     keep_going = False
                     self.complete = True
 
@@ -371,7 +404,7 @@ class Trial():
 
         self.end_trial(exp_settings)
         
-        return(self.final_found, self.final_score)
+        return(self.final_found, self.final_score, block_complete)
 
     def check_for_click(self, es, clock): 
 
@@ -421,7 +454,7 @@ class Trial():
 
                 # add info to log
                 # person, block, condition, trial, attempt, id, found, score, item_class, x, y, rt
-                es.dataFile.write(str(es.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(ii.item_class) + "," + str(ii.x) + "," + str(ii.y) + "," + str(current_time) + '\n')
+                es.dataFile.write(str(es.p_id) + "," + str(self.block) + "," + str(self.condition["label"].iloc[0]) + "," + str(self.n) + "," + str(self.attempts) + "," + str(ii.id) + "," + str(self.n_found) + "," + str(self.score) + "," + str(self.class_types[ii.item_class]) + "," + str(ii.x) + "," + str(ii.y) + "," + str(ii.offset) + "," + str(current_time) + '\n')
         
         return keep_going  
 

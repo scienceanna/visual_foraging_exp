@@ -8,7 +8,8 @@ class Item():
         self.y = y
         self.id = item_id
         self.item_class = item_class
-        self.is_target = is_target 
+        self.is_target = is_target
+        self.offset = offset
 
         # work out what colour and shape the item should be
         # this depends on what condition we're in, and what 
@@ -27,44 +28,25 @@ class Item():
     
         # check if we are using a distribution of colours
         if self.colour == "randomGrey":
-            grey = random.uniform(0,1)
+            grey = random.uniform(0.15,0.85)
             self.colour = [grey, grey, grey]
 
         self.display = False
 
         # now create our polygon(s)
-
+        scale_size = exp_settings.win.size[1]/25
         # if shape is a T or L :
+        
         if self.shape  in ["T", "L"]:
-
             self.poly = [None, None]
 
-            self.poly[0] = visual.Rect(
-                win = exp_settings.win, 
-                units = 'pix', 
-                size = (10, 50),
-                lineColor = None, 
-                fillColor = self.colour,                
-                pos = [self.x, self.y],
-                ori = self.orient,
-                autoDraw = False)
-                
             if self.shape == "T":
                 offset = 0
             else:
-                offset = offset * 22.5
+                offset = offset * (scale_size/2 - 2.5)
+                #print(offset)
 
-            print(offset)
-            
-            self.poly[1] = visual.Rect(
-                win = exp_settings.win, 
-                units = 'pix', 
-                size = (50, 10),
-                lineColor = None, 
-                fillColor = self.colour,                
-                pos = [self.x + offset, self.y-25],
-                ori = self.orient,
-                autoDraw = False)
+            self.poly = self.create_T_or_L(self.x, self.y, self.orient, exp_settings, offset, scale_size)
 
         else: 
             self.poly = visual.Polygon(
@@ -78,6 +60,75 @@ class Item():
                 pos = [self.x, self.y],
                 autoDraw = False)
                 
+    def create_T_or_L(self, x, y, orient, exp_settings, offset, scale_size):
+
+        self.poly = [None, None]
+
+        # draw stem
+        if orient in ["0", "180"]:         
+            self.poly[0] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (10, scale_size),
+                lineColor = None, 
+                fillColor = self.colour,                
+                pos = [self.x, self.y],
+                ori = self.orient,
+                autoDraw = False)              
+        else:   
+            self.poly[0] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (10, scale_size),
+                lineColor = None, 
+                fillColor = self.colour,                
+                pos = [self.x, self.y],
+                ori = self.orient,
+                autoDraw = False)    
+            
+        # draw crossbar
+        if orient == "0": 
+            self.poly[1] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (scale_size, 10),
+                lineColor = None, 
+                fillColor = self.colour,                
+                pos = [self.x + scale_size/2, self.y + offset],
+                ori = self.orient,
+                autoDraw = False)
+        elif orient == "180":
+            self.poly[1] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (scale_size, 10),
+                lineColor = None, 
+                fillColor = self.colour,               
+                pos = [self.x - scale_size/2, self.y - offset],
+                ori = self.orient,
+                autoDraw = False)
+        elif orient == "90":
+            self.poly[1] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (scale_size, 10),
+                lineColor = None, 
+                fillColor = self.colour,               
+                pos = [self.x + offset, self.y + scale_size/2],
+                ori = self.orient,
+                autoDraw = False)
+        elif orient == "270":
+            self.poly[1] = visual.Rect(
+                win = exp_settings.win, 
+                units = 'pix', 
+                size = (scale_size, 10),
+                lineColor = None, 
+                fillColor = self.colour,               
+                pos = [self.x - offset, self.y - scale_size/2],
+                ori = self.orient,
+                autoDraw = False)         
+      
+        return self.poly
             
     def update_autoDraw(self, ad):
         # turn autoDraw on or off for the item

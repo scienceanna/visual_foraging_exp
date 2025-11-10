@@ -1,8 +1,8 @@
 attribute,value
 scrn_width,2000
-scrn_height,2000
+scrn_height,1500
 width_border,500
-height_border,500
+height_border,350
 jiggle,0
 block_style,randomised
 global_practice,none

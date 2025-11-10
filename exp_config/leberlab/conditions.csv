@@ -3,13 +3,13 @@ label,freechoice,exhaustive
 n_row,8,8
 n_col,8,8
 placement_rule,cardinal,cardinal
-stopping_rule,inexhaustive,exhaustive
+stopping_rule,inexhaustive_points,exhaustive
 point_threshold,10,10
-max_time,20,20
+max_time,200,200
 distracter_click,as_target,as_target
 display_line,off,off
 background,noise,noise
-display_feedback,trial_found,trial_found
+display_feedback,block_found_in_trial,trial_found
 n_item_class,2,2
 proportions,10-44,10-44
 prop_missing,10,10

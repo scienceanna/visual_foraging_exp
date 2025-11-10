@@ -1,7 +1,7 @@
 attribute,block0,block1
 label,block0,block1
 conditions,exhaustive,freechoice
-n_trials_per_cond,2,2
+n_trials_per_cond,2,40
 group,none,none
 intro_text,This is an exhaustive block., This is a freechoice block.
 outro_text,This block is complete. Take a break!, This block is complete. Take a break!

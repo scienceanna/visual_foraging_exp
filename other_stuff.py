@@ -15,9 +15,21 @@ def gen_1overf_noise(beta=1.0, n=256):
     
     # Generate noise
     noise = np.fft.ifft2(spectrum).real
-    # Scale to [0, 1]
-    noise = noise - noise.min()
-    noise = noise / noise.max()
+    
+    # [scale to [-1,1]
+    noise_min = np.min(noise)
+    noise_max = np.max(noise)
+    
+    noise = 2 * (noise - noise_min) / (noise_max - noise_min) - 1
+    
+    # scale to [0,1]
+    #noise = noise - noise.min()
+    #noise = noise / noise.max()
+    
+    # trying to make more extreme
+    p = 2
+    noise = np.tanh(p * noise)
+    #print(noise)
 
     return noise
 
