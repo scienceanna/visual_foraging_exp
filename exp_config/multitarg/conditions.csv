@@ -1,13 +1,13 @@
 attribute,cond1
 label,test2
-n_row,15
-n_col,15
+n_row,10
+n_col,10
 placement_rule,cardinal
 stopping_rule,inexhaustive
 point_threshold,2
 max_time,10
 distracter_click,terminate
-display_line,none
+display_line,off
 background,noise
 display_feedback,block_score
 n_item_class,5
