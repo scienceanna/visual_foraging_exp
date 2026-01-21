@@ -3,7 +3,7 @@ from psychopy.event import Mouse
 from psychopy.hardware import keyboard
 from experiment import *
 
-experiment = Experiment("multitarg")
+experiment = Experiment("scott")
 
 # run the experiment
 experiment.run()
