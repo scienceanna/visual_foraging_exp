@@ -295,11 +295,14 @@ class Trial():
         if self.bkgrnd == "noise":
             self.img_stim.draw()
             exp_settings.win.flip()
-            self.imageNameBg = exp_settings.data_folder + str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + "_background.png"
-            #exp_settings.win.getMovieFrame()
-            im_bg = ImageGrab.grab()
-            im_bg.save(self.imageNameBg, 'png')
-            #exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageNameBg + '.png'))
+            # method 1
+            #self.imageNameBg = exp_settings.data_folder + str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + "_background.png"
+            #im_bg = ImageGrab.grab()
+            #im_bg.save(self.imageNameBg, 'png')
+            # method 2
+            self.imageNameBg = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + "_background"
+            exp_settings.win.getMovieFrame()
+            exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageNameBg + '.png'))
             self.img_stim.draw()
         
         # do we want a line?
@@ -335,11 +338,14 @@ class Trial():
         
         # save a frame, if wanted.
         if exp_settings.screenshot == "screenshot":
-            self.imageName = str(exp_settings.data_folder) + str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + ".png"
-            #exp_settings.win.getMovieFrame()
-            #exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageName + '.png'))
-            im = ImageGrab.grab()
-            im.save(self.imageName, 'png')
+            # method 1
+            #self.imageName = str(exp_settings.data_folder) + str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n) + ".png"
+            #im = ImageGrab.grab()
+            #im.save(self.imageName, 'png')
+            # method 2
+            self.imageName = str(exp_settings.p_id) + "_" + str(self.block) + "_" + str(self.condition["label"].iloc[0]) + "_" + str(self.n)
+            exp_settings.win.getMovieFrame()
+            exp_settings.win.saveMovieFrames(str(exp_settings.data_folder + self.imageName + '.png'))
 
         # loop while waiting for keypress/mouseclick/timeout
         clock = core.Clock()
