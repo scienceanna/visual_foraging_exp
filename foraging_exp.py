@@ -3,8 +3,7 @@ from psychopy.event import Mouse
 from psychopy.hardware import keyboard
 from experiment import *
 
-experiment = Experiment("test")
+experiment = Experiment("test_pblocks")
 
 # run the experiment
 experiment.run()
-  

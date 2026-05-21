@@ -433,7 +433,7 @@ class Trial():
                 current_time = np.around(clock.getTime(), 2)
 
                 # whatever was clicked, remove it from the display
-                if self.condition["distracter_click"][0] != "nondisappear":
+                if self.condition["distracter_click"].iloc[0] != "nondisappear":
                     ii.update_autoDraw(False)
 
                 if ii.is_target:
@@ -442,7 +442,7 @@ class Trial():
                     self.update_score(self.condition, ii, es)
                     
                     # make targets disappear if we are in the nondisappearing distractor condition
-                    if self.condition["distracter_click"][0] == "nondisappear":
+                    if self.condition["distracter_click"].iloc[0] == "nondisappear":
                         ii.update_autoDraw(False)
                         
                 else: 
@@ -451,13 +451,13 @@ class Trial():
                     print("not a target")
 
                     # how should we respond to the distracter click?    
-                    if self.condition["distracter_click"][0] == "terminate":  
+                    if self.condition["distracter_click"].iloc[0] == "terminate":  
                             # end the trial, but do not recycle  
                         print("terminate the trial")                       
                         keep_going = False
                         self.complete = True  
                        
-                    elif self.condition["distracter_click"][0] == "recycle":
+                    elif self.condition["distracter_click"].iloc[0] == "recycle":
                         # end the trial and then try it again
                         keep_going = False
                         self.complete = False   
@@ -466,7 +466,7 @@ class Trial():
                         # set found back to 0 for the next attempt
                         self.n_found = 0
 
-                    elif self.condition["distracter_click"][0] == "as_target":
+                    elif self.condition["distracter_click"].iloc[0] == "as_target":
                         # in this case, treat distracters like a target
                         # presumably it has some negative point value
                         self.update_score(self.condition, ii, es)
