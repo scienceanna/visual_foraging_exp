@@ -1,6 +1,6 @@
 attribute,block0,block1
 label,black0,block1
-conditions,test,test2
+conditions,test2,test2
 n_trials_per_cond,1,1
 group,none,none
 intro_text,This is a practice block.,"In this block, you need to find the squares."

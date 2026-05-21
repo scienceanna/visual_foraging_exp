@@ -3,7 +3,7 @@ from psychopy.event import Mouse
 from psychopy.hardware import keyboard
 from experiment import *
 
-experiment = Experiment("eliza")
+experiment = Experiment("test")
 
 # run the experiment
 experiment.run()
