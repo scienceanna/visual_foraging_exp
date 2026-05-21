@@ -1,0 +1,13 @@
+attribute,block1
+label,block1
+conditions,practice_condition
+n_trials_per_cond,2
+group,none
+intro_text,"In this block, you need to find the blue squares, red triangles, and green pentagons.
+
+The red triangles are worth 2 points, the blue squares are worth 3 points, and the green pentagons are worth 4 points.
+
+Click on shapes to 'find' them until the time runs out."
+score_text,Does this work?
+outro_text,This block is complete.
+practice,none

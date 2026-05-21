@@ -15,7 +15,7 @@ height_border: how big you want the border height to be (i.e. the area where sti
 jiggle: how much jiggle do you want to add in the grid placement rule conditions? 20 is a reasonable default if you're not sure.
 block_style: how would you like the blocks to be displayed? Options - 'in_order' (i.e. in the order they are presented in the blocks file), 'randomised' (i.e. in a random order). 'counter_balanced' (i.e. half your participants will see group 1 blocks first, half will see group 2 blocks first).
 global_practice: in the case where you have one practice block, this should match the practice block label. If you are doing something more complicated involving a pblocks file (see below), this should be set to 'none'. If you don't have a practice block, set to 'none'.
-intro_expt: what would you like to tell participants at the beginning of the experiment?
+intro_expt: what would you like to tell participants at the beginning of the experiment? [If you want to put something on a new line: press Alt+Enter in Excel, or if editing a text document, press return where you want the new line, and put all text in quotation marks i.e. "]
 outro_expt: what would you like to tell participants at the end of the experiment?
 track_eyes: set to 'track' if you would like to use the Eyelink Eyetracker
 screenshot: set to 'screenshot' if you would like to take screenshots of your trials.

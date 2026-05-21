@@ -2,7 +2,7 @@ attribute,cond1
 label,test2
 n_row,10
 n_col,10
-placement_rule,cardinal
+placement_rule,uniform
 stopping_rule,timer
 point_threshold,20
 max_time,10
